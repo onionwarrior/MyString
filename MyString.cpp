@@ -47,8 +47,7 @@ MyString::MyString(char c,size_t count):
     capacity_(size_+1),
     str_(new char[capacity_]())
 {
-    for(size_t i=0;i< count;i++)
-        str_[i]=c;
+    std::memset(str_,c,size_);
 }
 //Copy constructor
 MyString::MyString(const MyString&copy):
@@ -58,6 +57,7 @@ MyString::MyString(const MyString&copy):
 {
     std::memcpy(str_,copy.str_,size_);
 }
+//Move constructor 
 MyString::MyString(MyString&&rhs) noexcept:
     size_{std::exchange(rhs.size_,0)},
     capacity_{std::exchange(rhs.capacity_,0)},

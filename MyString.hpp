@@ -16,7 +16,7 @@ class MyString final
     template <typename ArgType>
     ArgType to_impl(std::true_type const &)
     {
-        if constexpr (std::is_signed_v<ArgType>)
+        if constexpr (std::is_  signed_v<ArgType>)
         {
             int64_t ret_val = 0;
             sscanf(str_, "%lld", &ret_val);
@@ -99,6 +99,11 @@ public:
         }
         pointer ptr_=nullptr;
     };
+    template <bool IsConst, bool IsReverse>
+    void print_first(const Iterator<IsConst,IsReverse>& arg)
+    {
+        std::cout<<*arg;
+    }
     MyString();
     MyString(const char *);
     MyString(const std::string &);
