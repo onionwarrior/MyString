@@ -12,12 +12,15 @@ int main()
 {
    MyString a1("Hello world!");
    a1.append("abob");
-std::string s1;
-s1 = a1.data();
-std::cout<<s1+"aaa";
-std::cout<<"aaa"+s1;
-std::cout<<s1<<std::endl;
-
+   //a1.insert(a1.rend(),"aaa");
+   std::string z("za");
+   z.insert(0,"aaa",3);
+   std::cout<<z;
+   std::string s1;
+   s1 = a1.data();
+   std::cout<<s1+"aaa";
+   std::cout<<"aaa"+s1;
+   std::cout<<s1<<std::endl;
    try
    {  
       MyString a=547;

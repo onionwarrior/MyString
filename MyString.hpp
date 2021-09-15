@@ -50,7 +50,7 @@ public:
         using reference = std::conditional_t<IsConst, value_type const &, value_type &>;
         //c-tor
         Iterator(pointer ptr) : ptr_{ptr} { }
-        //using SFINAE to "enable"(remove from overload resoltion) non const or const * operator based on constness of iterator
+        //using SFINAE to "enable"(remove from overload resolution) non const or const * operator based on constness of iterator
         template< bool _Const = IsConst >
         std::enable_if_t< _Const, reference >
         operator*()
@@ -125,29 +125,75 @@ public:
     we also want to ensure that callers use base() on reverse iterator call, therefore
     we disable these methods for reverse iterators using sfinae
     */
+    //use base() for reverse iterators
+    //less characters is better (i guess)
+    template< bool B, class T = void >
+    using enable = std::enable_if_t<B,T>;
     template <bool IsConst, bool IsReverse>
-    std::enable_if_t<!IsReverse>
+    enable<!IsReverse>
     insert(Iterator<IsConst,IsReverse> it, size_t count , char c)
     {
         insert(static_cast<size_t>(it.operator->()-str_),count,c);
     }
     template <bool IsConst, bool IsReverse>
-    std::enable_if_t<!IsReverse>
+    enable<!IsReverse>
     insert(Iterator<IsConst,IsReverse> it, const char *str, size_t count= default_append)
     {
         insert(static_cast<size_t>(it.operator->()-str_),str,count);
     }
     template <bool IsConst, bool IsReverse>
-    std::enable_if_t<!IsReverse>
+    enable<!IsReverse>
     insert(Iterator<IsConst,IsReverse> it, const std::string & str, size_t count = default_append)
     {
         insert(static_cast<size_t>(it.operator->()-str_),str,count);
     }
     template <bool IsConst, bool IsReverse>
-    std::enable_if_t<!IsReverse>
+    enable<!IsReverse>
     erase(Iterator<IsConst,IsReverse> it,size_t count )
     {
         erase(static_cast<size_t>(it.operator->()-str_),count);
+    }
+    template <bool IsConst, bool IsReverse>
+    enable<!IsReverse>
+    append(const std::string&str,Iterator<IsConst,IsReverse>it, size_t count=default_append)
+    {
+        append(str,static_cast<size_t>(it.operator->()-str_),count);
+    }
+    template <bool IsConst, bool IsReverse>
+    enable<!IsReverse>
+    append(const char *str,Iterator<IsConst,IsReverse>it, size_t count=default_append)
+    {
+        append(str,static_cast<size_t>(it.operator->()-str_),count);
+    }
+    template <bool IsConst, bool IsReverse>
+    enable<!IsReverse>
+    replace(Iterator<IsConst,IsReverse>it,size_t count,const char*str)
+    {
+        replace(static_cast<size_t>(it.operator->()-str_),count,str);
+    }
+    template <bool IsConst, bool IsReverse>
+    enable<!IsReverse>
+    replace(Iterator<IsConst,IsReverse>it ,size_t count,const std::string&str)
+    {
+        replace(static_cast<size_t>(it.operator->()-str_),count,str);
+    }
+    template <bool IsConst, bool IsReverse>
+    enable<!IsReverse,MyString>
+    substr(Iterator<IsConst,IsReverse> it, size_t count=default_append)
+    {
+        substr(static_cast<size_t>(it.operator->()-str_),count);
+    }
+    template <bool IsConst, bool IsReverse>
+    enable<!IsReverse,int>
+    find(const char*str, Iterator<IsConst,IsReverse> it)
+    {
+        find(str,static_cast<size_t>(it.operator->()-str_));
+    }
+    template <bool IsConst, bool IsReverse>
+    enable<!IsReverse,int>
+    find(const std::string&str, Iterator<IsConst,IsReverse> it)
+    {
+        find(str,static_cast<size_t>(it.operator->()-str_));
     }
     MyString();
     MyString(const char *);
@@ -157,6 +203,7 @@ public:
     MyString(const char *, size_t);
     MyString(char, size_t);
     MyString(const MyString &);
+    //could use stringstreams here, but we are not cutting any corners
     template<typename T,std::enable_if_t<std::is_integral<T>::value, bool> = true>
     MyString(T arg):size_{128},capacity_{size_+1},str_{new char[capacity_]()}
     {
