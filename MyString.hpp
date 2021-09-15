@@ -12,6 +12,7 @@ class MyString final
     size_t size_ = 0;
     size_t capacity_ = 1;
     char *str_ = nullptr;
+    //these private methods are parts of internal implementation, therefore user must not have direct access to them
     void resize(size_t);
     template <typename ArgType>
     ArgType to_impl(std::true_type const &)
@@ -45,9 +46,7 @@ public:
         using value_type = char;
         using pointer = std::conditional_t<IsConst, value_type const *, value_type *>;
         using reference = std::conditional_t<IsConst, value_type const &, value_type &>;
-        Iterator(pointer ptr) : ptr_(ptr)
-        {
-        }
+        Iterator(pointer ptr) : ptr_{ptr} { }
         template< bool _Const = IsConst >
         std::enable_if_t< _Const, reference >
         operator*()
@@ -119,6 +118,11 @@ public:
     void insert(Iterator<IsConst,IsReverse> it, const std::string & str, size_t count = default_append)
     {
         insert(static_cast<size_t>(it.operator->()-str_),str,count);
+    }
+    template <bool IsConst, bool IsReverse>
+    void erase(Iterator<IsConst,IsReverse> it,size_t count )
+    {
+        erase(static_cast<size_t>(it.operator->()-str_),count);
     }
     MyString();
     MyString(const char *);

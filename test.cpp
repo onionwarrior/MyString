@@ -11,19 +11,14 @@ void ab(T arg)
 
 int main()
 {
-   MyString a1 = "aaaaa";
-a1.insert(0,1,'!');
-std::cout<<a1<<std::endl;
-a1.insert(3, 2, '@');
-std::cout << a1 << std::endl;
-a1.insert(a1.end(),4,'z');
-std::cout << a1 << std::endl;
-a1.insert(a1.begin(),std::string("aboba"));
-std::cout << a1 << std::endl;
-a1.insert(a1.rend().base(),"aboba");
-std::string a("zzzz");
-a1.insert(a1.rend().base(),a);
-std::cout << a1 << std::endl;
+   MyString a1("Hello world!");
+   a1.append("abob");
+std::string s1;
+s1 = a1.data();
+std::cout<<s1+"aaa";
+std::cout<<"aaa"+s1;
+std::cout<<s1<<std::endl;
+
    try
    {  
       MyString a=547;
