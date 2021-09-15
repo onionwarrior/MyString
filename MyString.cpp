@@ -150,7 +150,7 @@ void MyString::replace(size_t index, size_t count, const char* str)
     formed space between left and right parts, as well as shrinking the capacity
     to new_size
     */
-    const size_t arg_size=std::strlen(str);
+    const size_t arg_size{std::strlen(str)};
     const size_t new_size{size_ - count+arg_size};
     const size_t old_rhs_start{index+count};
     const size_t new_rhs_start{old_rhs_start+arg_size-count};

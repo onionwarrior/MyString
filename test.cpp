@@ -8,7 +8,6 @@ void ab(T arg)
 {
    std::cout<<std::is_pointer<std::decay_t<T> >::value;
 }
-
 int main()
 {
    MyString a1("Hello world!");

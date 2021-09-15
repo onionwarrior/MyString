@@ -38,15 +38,19 @@ class MyString final
         return static_cast<ArgType>(ret_val);
     }
 public:
+    //making iterator a template, so we dont have to redeclare similar code 4 times for different iterators
     template <bool IsConst,bool IsReverse>
     struct Iterator
     {
+        //defining iterator traits for our iterator using tag dispatch(?legacy mechanish, c++20 uses concepts)
         using iterator_category = std::forward_iterator_tag;
         using difference_type = std::ptrdiff_t;
         using value_type = char;
         using pointer = std::conditional_t<IsConst, value_type const *, value_type *>;
         using reference = std::conditional_t<IsConst, value_type const &, value_type &>;
+        //c-tor
         Iterator(pointer ptr) : ptr_{ptr} { }
+        //using SFINAE to "enable"(remove from overload resoltion) non const or const * operator based on constness of iterator
         template< bool _Const = IsConst >
         std::enable_if_t< _Const, reference >
         operator*()
@@ -63,6 +67,13 @@ public:
         {
             return ptr_;
         }
+        /*
+        same behaviour as stl container iterators,
+        since SomeClassInstance.rend() actually points to the [-1] element of the underlying sequence,
+        it cant be used for inserting something into the container, therefore we provide any reverse iterator
+        with a base() method, which return and instance of a non-reverse version, which satisfies the following 
+        condition &*(ReverseIterator.base() - 1) == &*ReverseIterator, thus simply pointing to the next element
+        */
         template< bool _IsReverse = IsReverse >
         std::enable_if_t< _IsReverse, Iterator<IsConst,!IsReverse> >
         base()
@@ -95,6 +106,10 @@ public:
             return a.ptr_ != b.ptr_;
         }
         private:
+        /*
+        since this is a forward iterator, we dont need decrement as a public method,
+        but it can be used to define increment for reverse iterator
+        */
         template< bool _IsReverse = IsReverse >
         std::enable_if_t< _IsReverse, reference >
         operator--()
@@ -104,23 +119,33 @@ public:
         }
         pointer ptr_=nullptr;
     };
+    /*
+    we can define methods using iterators just by calling 
+    the non-iterator version with the parameter of it.operator->()-str_(index)
+    we also want to ensure that callers use base() on reverse iterator call, therefore
+    we disable these methods for reverse iterators using sfinae
+    */
     template <bool IsConst, bool IsReverse>
-    void insert(Iterator<IsConst,IsReverse> it, size_t count , char c)
+    std::enable_if_t<!IsReverse>
+    insert(Iterator<IsConst,IsReverse> it, size_t count , char c)
     {
         insert(static_cast<size_t>(it.operator->()-str_),count,c);
     }
     template <bool IsConst, bool IsReverse>
-    void insert(Iterator<IsConst,IsReverse> it, const char *str, size_t count= default_append)
+    std::enable_if_t<!IsReverse>
+    insert(Iterator<IsConst,IsReverse> it, const char *str, size_t count= default_append)
     {
         insert(static_cast<size_t>(it.operator->()-str_),str,count);
     }
     template <bool IsConst, bool IsReverse>
-    void insert(Iterator<IsConst,IsReverse> it, const std::string & str, size_t count = default_append)
+    std::enable_if_t<!IsReverse>
+    insert(Iterator<IsConst,IsReverse> it, const std::string & str, size_t count = default_append)
     {
         insert(static_cast<size_t>(it.operator->()-str_),str,count);
     }
     template <bool IsConst, bool IsReverse>
-    void erase(Iterator<IsConst,IsReverse> it,size_t count )
+    std::enable_if_t<!IsReverse>
+    erase(Iterator<IsConst,IsReverse> it,size_t count )
     {
         erase(static_cast<size_t>(it.operator->()-str_),count);
     }
