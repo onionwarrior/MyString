@@ -171,7 +171,7 @@ void MyString::insert(size_t index ,size_t count,char c)
 }
 void MyString::insert(size_t index,const std::string&str,size_t size)
 {
-    replace(index,size,str.c_str());
+    replace(index,0,str.c_str());
 }
 int MyString::find(const char*str,size_t index)
 {

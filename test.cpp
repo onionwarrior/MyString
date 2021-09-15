@@ -11,8 +11,19 @@ void ab(T arg)
 
 int main()
 {
-   MyString zzz(std::move(MyString("aboba")));
-   std::fstream a("zzz.txt");
+   MyString a1 = "aaaaa";
+a1.insert(0,1,'!');
+std::cout<<a1<<std::endl;
+a1.insert(3, 2, '@');
+std::cout << a1 << std::endl;
+a1.insert(a1.end(),4,'z');
+std::cout << a1 << std::endl;
+a1.insert(a1.begin(),std::string("aboba"));
+std::cout << a1 << std::endl;
+a1.insert(a1.rend().base(),"aboba");
+std::string a("zzzz");
+a1.insert(a1.rend().base(),a);
+std::cout << a1 << std::endl;
    try
    {  
       MyString a=547;

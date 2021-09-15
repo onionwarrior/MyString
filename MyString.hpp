@@ -4,19 +4,19 @@
 #include <type_traits>
 #include <functional>
 #include <cstring>
+//no magic numbers
 constexpr size_t default_append = -1;
-//funny patteern matching using template magic
-// это для default
+//No point in inheriting MyString
 class MyString final
 {
     size_t size_ = 0;
     size_t capacity_ = 1;
     char *str_ = nullptr;
-    void resize(size_t); // nothrow
+    void resize(size_t);
     template <typename ArgType>
     ArgType to_impl(std::true_type const &)
     {
-        if constexpr (std::is_  signed_v<ArgType>)
+        if constexpr (std::is_signed_v<ArgType>)
         {
             int64_t ret_val = 0;
             sscanf(str_, "%lld", &ret_val);
@@ -64,6 +64,12 @@ public:
         {
             return ptr_;
         }
+        template< bool _IsReverse = IsReverse >
+        std::enable_if_t< _IsReverse, Iterator<IsConst,!IsReverse> >
+        base()
+        {
+            return Iterator<IsConst,!_IsReverse>(ptr_+1);
+        }
         Iterator &operator++()
         {
             if constexpr(!IsReverse)
@@ -100,9 +106,19 @@ public:
         pointer ptr_=nullptr;
     };
     template <bool IsConst, bool IsReverse>
-    void print_first(const Iterator<IsConst,IsReverse>& arg)
+    void insert(Iterator<IsConst,IsReverse> it, size_t count , char c)
     {
-        std::cout<<*arg;
+        insert(static_cast<size_t>(it.operator->()-str_),count,c);
+    }
+    template <bool IsConst, bool IsReverse>
+    void insert(Iterator<IsConst,IsReverse> it, const char *str, size_t count= default_append)
+    {
+        insert(static_cast<size_t>(it.operator->()-str_),str,count);
+    }
+    template <bool IsConst, bool IsReverse>
+    void insert(Iterator<IsConst,IsReverse> it, const std::string & str, size_t count = default_append)
+    {
+        insert(static_cast<size_t>(it.operator->()-str_),str,count);
     }
     MyString();
     MyString(const char *);
