@@ -1,9 +1,5 @@
 #include "../MyString.hpp"
-#include <assert.h>
-void are_equal(const char *a,const char*b)
-{
-    assert(strcmp(a,b)==0);
-}
+#include "testing_utilites.hpp"
 void do_constructor_tests()
 {
     //default constructor test

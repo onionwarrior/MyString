@@ -119,6 +119,21 @@ public:
         }
         pointer ptr_=nullptr;
     };
+    class InvalidConversion:public std::exception
+    {
+        public:
+        explicit InvalidConversion(const char* string="Invalid conversion!"):msg_{new char[std::strlen(string)+1]()}
+        {
+            strcpy(msg_,string);
+        }
+        explicit InvalidConversion(const std::string & string):InvalidConversion{string.c_str()}{}
+        const char* what () const noexcept
+        {
+            return msg_;
+        }
+        private:
+        char * msg_=nullptr;
+    };
     /*
     we can define methods using iterators just by calling 
     the non-iterator version with the parameter of it.operator->()-str_(index)
@@ -196,11 +211,10 @@ public:
         find(str,static_cast<size_t>(it.operator->()-str_));
     }
     MyString();
-    MyString(const char *);
     MyString(const std::string &);
     MyString(std::initializer_list<char>);
-    MyString(MyString &&) noexcept;
-    MyString(const char *, size_t);
+    MyString(MyString &&);
+    MyString(const char *, size_t=1);
     MyString(char, size_t);
     MyString(const MyString &);
     //could use stringstreams here, but we are not cutting any corners
@@ -216,6 +230,7 @@ public:
     template<typename T,std::enable_if_t<std::is_floating_point<T>::value, bool> = true>
     MyString(T arg):size_{128},capacity_{size_+1},str_{new char[capacity_]()}
     {
+        int ret=0;
         if constexpr(std::is_same<float,T>::value)
             std::snprintf(str_,size_,"%f",arg);
         else

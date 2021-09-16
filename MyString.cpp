@@ -3,19 +3,8 @@
 #include <stdexcept>
 //Default c-tor
 MyString::MyString():
-    str_(new char[capacity_]())
+    str_{new char[capacity_]()}
 {}
-//C-style string c-tor
-MyString::MyString(const char * c_str):
-    size_(c_str ? std::strlen(c_str) : 0),
-    capacity_(size_+1),
-    str_( c_str ? new char[capacity_]() : nullptr)
-{
-    //same behaviour as std::string
-    if(nullptr==c_str)
-        throw std::invalid_argument("nullptr passed to C-tor");
-    std::memcpy(str_,c_str,size_);
-}
 //std::string c-tor
 MyString::MyString(const std::string& arg):
     MyString(arg.c_str())
@@ -32,7 +21,7 @@ MyString::MyString(std::initializer_list<char> init_list):
 }
 //count string constructor
 MyString::MyString(const char * c_str,size_t count):
-    size_(c_str ? std::strlen(c_str) : 0),
+    size_(c_str ? std::strlen(c_str)*count : 0),
     capacity_(size_+1),
     str_( c_str ? new char[capacity_]() : nullptr)
 {
@@ -59,7 +48,7 @@ MyString::MyString(const MyString&copy):
     std::memcpy(str_,copy.str_,size_);
 }
 //Move constructor 
-MyString::MyString(MyString&&rhs) noexcept:
+MyString::MyString(MyString&&rhs):
     size_{std::exchange(rhs.size_,0)},
     capacity_{std::exchange(rhs.capacity_,0)},
     str_{std::exchange(rhs.str_,nullptr)}
@@ -103,14 +92,14 @@ void MyString::resize(size_t new_size)
     else
     {
         //otherwise multiple capacity by the smallest power of 2, such that capacity_*(2^n)>new_size
-        while(capacity_<new_size)
+        while(capacity_<new_size+1)
             capacity_*=2;
     }
     //reallocate and copy
-    size_=new_size;
     auto * new_str=new char[capacity_]();
     std::memcpy(new_str, str_, size_ );
     delete [] str_;
+    size_=new_size;
     str_ = new_str;
 }
 void MyString::append(size_t count,char c)
@@ -118,7 +107,7 @@ void MyString::append(size_t count,char c)
     //make an array of count symbols and append it
     auto * c_as_str=new char[count]();
     std::memset(c_as_str,c,count);
-    append(c_as_str,0,1);
+    append(c_as_str,0,count);
     delete [] c_as_str;
 }
 void MyString::append(const char*c_str,size_t index,size_t count)
@@ -128,10 +117,9 @@ void MyString::append(const char*c_str,size_t index,size_t count)
         count=std::strlen(c_str);
     //reallocate if needed and copy to the end
     const auto new_size=size_+count;
-    if(capacity_+1<new_size)
+    if(capacity_<new_size+1)
         resize(new_size); 
-    //std::strncat(str_,c_str+index,count);
-    std::memcpy(str_+size_,c_str,count);
+    std::strncat(str_,c_str+index,count);
     size_=new_size;
 }
 void MyString::append(const std::string& str,size_t index,size_t count)
@@ -400,5 +388,7 @@ rcit MyString::rend() const
 }
 MyString::~MyString()
 {
+    //std::cout<<"call"<<std::endl;
+    //int four=2+2;
     delete [] str_;
 }

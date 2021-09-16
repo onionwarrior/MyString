@@ -3,6 +3,7 @@
 #include <iosfwd>
 #include <fstream>
 #include <algorithm>
+#include <vector>
 template<typename T>
 void ab(T arg)
 {
@@ -21,15 +22,23 @@ int main()
    std::cout<<s1+"aaa";
    std::cout<<"aaa"+s1;
    std::cout<<s1<<std::endl;
+   MyString test;
+   std::ifstream in("./a.txt");
+   while(!in.eof())
+      in>>test;
+   std::cout<<test;
    try
    {  
-      MyString a=547;
+      MyString a(547);
       std::cout<<a;
-      std::cout<<a.capacity();
+      std::cout<<a.capacity()<<'\n';
+      MyString test(0.05);
+      std::cout<<test;
+      //std::cout<<std::vector<int>();
+      //std::cout<<""<<b.c_str()<<"";
    }
    catch(const std::invalid_argument&e)
    {
       std::cout<<e.what();
    }
 }
-//ndefined reference to `std::basic_ostream<char, std::char_traits<char> >& operator<< <char>(std::basic_ostream<char, std::char_traits<char> >&, MyString const&)'
