@@ -4,4 +4,7 @@ int main()
 {
     do_constructor_tests();
     do_append_tests();
+    MyString a="aboba";
+    MyString b="bebra"+a;
+    std::cout<<a+b;
 }

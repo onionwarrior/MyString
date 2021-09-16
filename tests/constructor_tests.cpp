@@ -48,4 +48,13 @@ void do_constructor_tests()
     ;
     MyString exceptionally_large(exceptionally_large_cstr);
     are_equal(exceptionally_large_cstr,exceptionally_large.c_str());
+    MyString from_sint_pos(123456789),from_sint_neg(-123456789);
+    are_equal(from_sint_pos.c_str(),"123456789");
+    are_equal(from_sint_neg.c_str(),"-123456789");
+    MyString from_uint(1234567890u);
+    are_equal(from_uint.c_str(),"1234567890");
+    //weird
+    MyString from_float(0.123456789f),from_double(0.123456789);
+    are_equal(from_float.c_str(),"0.123457");
+    are_equal(from_double.c_str(),"0.123457");
 }
