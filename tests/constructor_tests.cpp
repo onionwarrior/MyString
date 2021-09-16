@@ -1,4 +1,3 @@
-#include "../MyString.hpp"
 #include "testing_utilites.hpp"
 void do_constructor_tests()
 {
@@ -53,7 +52,7 @@ void do_constructor_tests()
     are_equal(from_sint_neg.c_str(),"-123456789");
     MyString from_uint(1234567890u);
     are_equal(from_uint.c_str(),"1234567890");
-    //weird
+    //weird floats
     MyString from_float(0.123456789f),from_double(0.123456789);
     are_equal(from_float.c_str(),"0.123457");
     are_equal(from_double.c_str(),"0.123457");

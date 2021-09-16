@@ -1,4 +1,3 @@
-#include "../MyString.hpp"
 #include "testing_utilites.hpp"
 void do_append_tests()
 {
