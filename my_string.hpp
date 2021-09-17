@@ -119,7 +119,7 @@ public:
         }
         pointer ptr_=nullptr;
     };
-    class InvalidConversion:public std::exception
+    class InvalidConversion: public std::exception
     {
         public:
         explicit InvalidConversion(const char* string="Invalid conversion!"):msg_{new char[std::strlen(string)+1]()}
@@ -132,6 +132,10 @@ public:
             return msg_;
         }
         private:
+        ~InvalidConversion()
+        {
+            delete [] msg_;
+        }
         char * msg_=nullptr;
     };
     /*
@@ -196,7 +200,7 @@ public:
     enable<!IsReverse,MyString>
     substr(Iterator<IsConst,IsReverse> it, size_t count=default_append)
     {
-        substr(static_cast<size_t>(it.operator->()-str_),count);
+        return substr(static_cast<size_t>(it.operator->()-str_),count);
     }
     template <bool IsConst, bool IsReverse>
     enable<!IsReverse,int>
@@ -217,7 +221,7 @@ public:
     MyString(const char *, size_t=1);
     MyString(char, size_t);
     MyString(const MyString &);
-    //could use stringstreams here, but we are not cutting any corners
+    //could use stringstreams here, but we are not cutting any corners (also definetely not portable due to format string)
     template<typename T,std::enable_if_t<std::is_integral<T>::value, bool> = true>
     MyString(T arg):size_{128},capacity_{size_+1},str_{new char[capacity_]()}
     {
@@ -230,7 +234,6 @@ public:
     template<typename T,std::enable_if_t<std::is_floating_point<T>::value, bool> = true>
     MyString(T arg):size_{128},capacity_{size_+1},str_{new char[capacity_]()}
     {
-        int ret=0;
         if constexpr(std::is_same<float,T>::value)
             std::snprintf(str_,size_,"%f",arg);
         else
@@ -258,9 +261,11 @@ public:
     int find(const std::string &, size_t = 0);
     void erase(size_t, size_t);
     void shrink_to_fit();
-    MyString operator+(const MyString &);
-    MyString operator+(const char *);
-    MyString operator+(const std::string &);
+    friend MyString operator+(const MyString &,const MyString &);
+    friend MyString operator+(const char *,const MyString &);
+    friend MyString operator+(const std::string &,const MyString &);
+    friend MyString operator+(const MyString &,const char *);
+    friend MyString operator+(const MyString &,const std::string &);
     MyString &operator+=(const MyString &);
     MyString &operator+=(const std::string &);
     MyString &operator+=(const char *);
