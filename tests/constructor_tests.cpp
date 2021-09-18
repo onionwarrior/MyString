@@ -25,7 +25,7 @@ void do_constructor_tests()
     are_equal(string_from_cstr.c_str(),test_cstr);
     MyString string_from_large_cstr(test_cstr_large);
     are_equal(string_from_large_cstr.c_str(),test_cstr_large);
-    std::initializer_list init_list{'l', 'o', 'r', 'e', 'm', ' ', 'i', 'p', 's', 'u', 'm', ' ', 'd', 'o', 'l', 'o', 'r', ' ', 's', 'i', 't', ' ', 'a', 'm', 'e', 't'};
+    std::initializer_list<char> init_list{'l', 'o', 'r', 'e', 'm', ' ', 'i', 'p', 's', 'u', 'm', ' ', 'd', 'o', 'l', 'o', 'r', ' ', 's', 'i', 't', ' ', 'a', 'm', 'e', 't'};
     MyString string_from_init_list(init_list);
     are_equal(string_from_init_list.c_str(),"lorem ipsum dolor sit amet");
     std::string str_lvalue(test_cstr);

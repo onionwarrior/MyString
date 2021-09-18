@@ -131,8 +131,12 @@ public:
         {
             return msg_;
         }
+        ~InvalidConversion()
+        {
+            delete [] msg_;
+        }
         private:
-        char * msg_=nullptr;
+        char*msg_=nullptr;
     };
     /*
     we can define methods using iterators just by calling 
@@ -196,19 +200,19 @@ public:
     enable<!IsReverse,MyString>
     substr(Iterator<IsConst,IsReverse> it, size_t count=default_append)
     {
-        substr(static_cast<size_t>(it.operator->()-str_),count);
+        return substr(static_cast<size_t>(it.operator->()-str_),count);
     }
     template <bool IsConst, bool IsReverse>
     enable<!IsReverse,int>
     find(const char*str, Iterator<IsConst,IsReverse> it)
     {
-        find(str,static_cast<size_t>(it.operator->()-str_));
+        return find(str,static_cast<size_t>(it.operator->()-str_));
     }
     template <bool IsConst, bool IsReverse>
     enable<!IsReverse,int>
     find(const std::string&str, Iterator<IsConst,IsReverse> it)
     {
-        find(str,static_cast<size_t>(it.operator->()-str_));
+       return find(str,static_cast<size_t>(it.operator->()-str_));
     }
     MyString();
     MyString(const std::string &);

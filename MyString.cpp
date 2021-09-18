@@ -96,6 +96,8 @@ void MyString::resize(size_t new_size)
             capacity_*=2;
     }
     //reallocate and copy
+    if(size_>new_size)
+        size_=new_size;
     auto * new_str=new char[capacity_]();
     std::memcpy(new_str, str_, size_ );
     delete [] str_;
@@ -105,7 +107,7 @@ void MyString::resize(size_t new_size)
 void MyString::append(size_t count,char c)
 {
     //make an array of count symbols and append it
-    auto * c_as_str=new char[count]();
+    auto * c_as_str=new char[count+1]();
     std::memset(c_as_str,c,count);
     append(c_as_str,0,count);
     delete [] c_as_str;
@@ -143,8 +145,9 @@ void MyString::replace(size_t index, size_t count, const char* str)
     const size_t old_rhs_start{index+count};
     const size_t new_rhs_start{old_rhs_start+arg_size-count};
     //resize(std::max(new_size,size_));
-    resize(new_size);
-    std::memmove(str_ + new_rhs_start, str_ + old_rhs_start, size_-old_rhs_start);
+    const auto old_size=size_;
+    //resize(new_size);
+    std::memmove(str_ + new_rhs_start, str_ + old_rhs_start, old_size-old_rhs_start);
     std::memcpy(str_+index,str,arg_size);
     //resize(new_size);
 }
@@ -171,7 +174,7 @@ void MyString::insert(size_t index,const char * str,size_t size)
         throw std::invalid_argument("nullptr passed to MyString::insert");
     if(size==default_append)
         size=std::strlen(str);        
-    char * temp=new char[size]();
+    char * temp=new char[size+1]();
     std::memcpy(temp,str,size);
     replace(index,0,temp);
     delete [] temp;
@@ -179,14 +182,19 @@ void MyString::insert(size_t index,const char * str,size_t size)
 //same as above but fill a temp string
 void MyString::insert(size_t index ,size_t count,char c)
 {
-    auto * temp=new char[count]();
+    auto temp=new char[count+1]();
     std::memset(temp,c,count);
     replace(index,0,temp);
     delete [] temp;
 }
 void MyString::insert(size_t index,const std::string&str,size_t size)
 {
-    replace(index,0,str.c_str());
+    if(size==default_append)
+        size=str.size();
+    auto temp=new char[size+1];
+    std::memcpy(temp,str.c_str(),size);
+    replace(index,0,temp);
+    delete [] temp;
 }
 /*
 find using builtin strstr,
@@ -356,7 +364,7 @@ cit MyString::end() const
 }
 cit MyString::cbegin() const
 {
-    return  MyString::end();
+    return  MyString::begin();
 }
 cit MyString::cend() const
 {
