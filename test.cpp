@@ -1,4 +1,5 @@
-#include "MyString.hpp"
+#include "boost/python/detail/wrap_python.hpp"
+#include "my_string.hpp"
 #include <iostream>
 #include <iosfwd>
 #include <fstream>

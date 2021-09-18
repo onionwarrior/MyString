@@ -1,4 +1,4 @@
-#include "MyString.hpp"
+#include "my_string.hpp"
 #include <cstring>
 #include <stdexcept>
 //Default c-tor
@@ -99,6 +99,8 @@ void MyString::resize(size_t new_size)
     if(size_>new_size)
         size_=new_size;
     auto * new_str=new char[capacity_]();
+    if(new_size<size_)
+        size_=new_size;
     std::memcpy(new_str, str_, size_ );
     delete [] str_;
     size_=new_size;
@@ -137,19 +139,22 @@ void MyString::replace(size_t index, size_t count, const char* str)
     /*
     calculate indexes of left and right parts of the string after replacement,
     then move the right part with std::memmove and insert the replacer in the
-    formed space between left and right parts, as well as shrinking the capacity
-    to new_size
+    formed space between left and right parts
     */
     const size_t arg_size{std::strlen(str)};
-    const size_t new_size{size_ - count+arg_size};
+    const size_t new_size{size_-count+arg_size};
     const size_t old_rhs_start{index+count};
     const size_t new_rhs_start{old_rhs_start+arg_size-count};
-    //resize(std::max(new_size,size_));
-    const auto old_size=size_;
+    const size_t old_size{size_};
+    //if replacing makes string bigger we resize it so we have space for moving part to the right from replaced substr
+    if(new_size>size_)
+        resize(new_size);
     //resize(new_size);
     std::memmove(str_ + new_rhs_start, str_ + old_rhs_start, old_size-old_rhs_start);
     std::memcpy(str_+index,str,arg_size);
-    //resize(new_size);
+    //if we didnt increase the string capacity, shrink capacity now since string did decrease in size
+    if(new_size<old_size)
+        resize(new_size);
 }
 void MyString::replace(size_t index, size_t count, const std::string &str)
 {
@@ -182,19 +187,14 @@ void MyString::insert(size_t index,const char * str,size_t size)
 //same as above but fill a temp string
 void MyString::insert(size_t index ,size_t count,char c)
 {
-    auto temp=new char[count+1]();
+    auto * temp=new char[count+1]();
     std::memset(temp,c,count);
     replace(index,0,temp);
     delete [] temp;
 }
 void MyString::insert(size_t index,const std::string&str,size_t size)
 {
-    if(size==default_append)
-        size=str.size();
-    auto temp=new char[size+1];
-    std::memcpy(temp,str.c_str(),size);
-    replace(index,0,temp);
-    delete [] temp;
+    insert(index,str.c_str(),size);
 }
 /*
 find using builtin strstr,
@@ -220,30 +220,39 @@ MyString MyString::substr(size_t index,size_t count)
 {
     if(default_append==count)
         count=size_-index;
+    if(count+index>size_)
+        throw std::out_of_range("Substring is out of range");
     auto * temp=new char[count+1]();
     std::memcpy(temp,str_+index,count);
     MyString return_value(temp);
     delete [] temp;
     return return_value;
 }
-//remake as friend i guess
-MyString MyString::operator+(const MyString&rhs)
+MyString operator+(const MyString&lhs,const MyString &rhs)
 {
-    //MyString copy(*this);
-    //copy.append(rhs.c_str());
-    return *this+rhs.c_str();
+    MyString copy(lhs);
+    return (copy+rhs.str_);
 }
-MyString MyString::operator+(const char*rhs)
+MyString operator+(const MyString&lhs,const char*rhs)
 {
-    MyString copy(*this);
+    MyString copy(lhs);
     copy.append(rhs);
     return copy;
 }
-MyString MyString::operator+(const std::string&rhs)
+MyString operator+(const MyString&lhs,const std::string&rhs)
 {
-    //MyString copy(*this);
-    //copy.append(rhs.c_str());
-    return *this+rhs.c_str();
+    MyString copy(lhs);
+    return (lhs+rhs.c_str());
+}//these two can be bad if no optimization happens
+MyString operator+(const char*lhs,const MyString&rhs)
+{
+    MyString copy(lhs);
+    return (copy+rhs);
+}
+MyString operator+(const std::string&lhs,const MyString&rhs)
+{
+    MyString copy(lhs);
+    return (copy+rhs);
 }
 MyString & MyString::operator+=(const char* rhs)
 {
