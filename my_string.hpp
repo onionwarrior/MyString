@@ -7,7 +7,7 @@
 //no magic numbers
 constexpr size_t default_append = -1;
 //No point in inheriting MyString
-class MyString final
+class MyString 
 {
     size_t size_ = 0;
     size_t capacity_ = 1;
@@ -131,15 +131,11 @@ public:
         {
             return msg_;
         }
-        ~InvalidConversion()
+        ~InvalidConversion() noexcept
         {
             delete [] msg_;
         }
         private:
-        ~InvalidConversion()
-        {
-            delete [] msg_;
-        }
         char * msg_=nullptr;
     };
     /*
@@ -226,6 +222,7 @@ public:
     MyString(char, size_t);
     MyString(const MyString &);
     //could use stringstreams here, but we are not cutting any corners (also definetely not portable due to format string)
+    /*
     template<typename T,std::enable_if_t<std::is_integral<T>::value, bool> = true>
     MyString(T arg):size_{128},capacity_{size_+1},str_{new char[capacity_]()}
     {
@@ -243,7 +240,7 @@ public:
         else
             std::snprintf(str_,size_,"%lf",arg);
         shrink_to_fit();
-    }
+    }*/
     friend void swap(MyString &first, MyString &second);
     char *c_str() const;
     char *data() const;
