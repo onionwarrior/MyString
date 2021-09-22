@@ -1,8 +1,6 @@
 #pragma once
 #include <vector>
-#include <memory>
 #include <map>
-#include <iostream>
 struct AhoCorasickAutomaton
 {
     struct Node
@@ -153,17 +151,3 @@ public:
         return result;
     }
 };
-int main()
-{
-    AhoCorasickAutomaton a(std::vector<const char *>{"brown", "lazy do", "fof", "a", "fox jumps", "lazy dog"});
-    a.BuildAutomaton();
-    std::string z("a quick brown fox jumps over a lazy dog");
-    auto val = a.process_text(z);
-    for (auto & [string, indices] : val)
-    {
-        std::cout << string<<":";
-        for(const auto & index:indices)
-            std::cout<<" "<< index;
-        std::cout<<std::endl;
-    }
-}

@@ -1,4 +1,5 @@
-#include "my_string.hpp"
+#include "../include/my_string.hpp"
+#include "../include/aho_corasick.hpp"
 //Default c-tor
 MyString::MyString():
     str_{new char[capacity_]()}

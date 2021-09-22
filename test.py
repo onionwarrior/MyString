@@ -1,8 +1,5 @@
-import my_string
-#import mystring
-import mystring
-zz=mystring.MyString()
-print(zz.c_str())
-a=my_string.MyString()
-#a.append("aboooooba")
-print(a)
+import swig.my_string_swig
+import faulthandler; faulthandler.enable()
+def test_ctor():
+    pass
+test_ctor()

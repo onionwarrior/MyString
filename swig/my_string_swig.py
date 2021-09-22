@@ -10,9 +10,9 @@ if _swig_python_version_info < (2, 7, 0):
 
 # Pull in all the attributes from the low-level C/C++ module
 if __package__ or "." in __name__:
-    from ._my_string import *
+    from ._my_string_swig import *
 else:
-    from _my_string import *
+    from _my_string_swig import *
 
 try:
     import builtins as __builtin__

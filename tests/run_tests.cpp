@@ -14,4 +14,5 @@ int main()
     do_substr_tests();
     do_find_tests();    
     do_to_tests();
+    std::cout<<"All tests passed!"<<std::endl;
 }

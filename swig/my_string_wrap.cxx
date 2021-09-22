@@ -299,7 +299,7 @@ template <typename T> T SwigValueInit() {
    allows to return the 'cast rank', for example, if you have this
 
        int food(double)
-       int fooi(int);S
+       int fooi(int);
 
    and you call
 
@@ -3468,16 +3468,16 @@ static swig_module_info swig_module = {swig_types, 12, 0, 0, 0, 0};
 #define SWIG_TypeQuery SWIG_Python_TypeQuery
 
 /*-----------------------------------------------
-              @(target):= _my_string.so
+              @(target):= _my_string_swig.so
   ------------------------------------------------*/
 #if PY_VERSION_HEX >= 0x03000000
-#  define SWIG_init    PyInit__my_string
+#  define SWIG_init    PyInit__my_string_swig
 
 #else
-#  define SWIG_init    init_my_string
+#  define SWIG_init    init_my_string_swig
 
 #endif
-#define SWIG_name    "_my_string"
+#define SWIG_name    "_my_string_swig"
 
 #define SWIGVERSION 0x040002 
 #define SWIG_VERSION SWIGVERSION
@@ -3564,59 +3564,7 @@ namespace swig {
 
 
 #define SWIG_FILE_WITH_INIT
-#include "my_string.hpp"
-
-
-  #define SWIG_From_long   PyInt_FromLong 
-
-
-SWIGINTERNINLINE PyObject* 
-SWIG_From_unsigned_SS_long  (unsigned long value)
-{
-  return (value > LONG_MAX) ?
-    PyLong_FromUnsignedLong(value) : PyInt_FromLong(static_cast< long >(value));
-}
-
-
-#include <limits.h>
-#if !defined(SWIG_NO_LLONG_MAX)
-# if !defined(LLONG_MAX) && defined(__GNUC__) && defined (__LONG_LONG_MAX__)
-#   define LLONG_MAX __LONG_LONG_MAX__
-#   define LLONG_MIN (-LLONG_MAX - 1LL)
-#   define ULLONG_MAX (LLONG_MAX * 2ULL + 1ULL)
-# endif
-#endif
-
-
-#if defined(LLONG_MAX) && !defined(SWIG_LONG_LONG_AVAILABLE)
-#  define SWIG_LONG_LONG_AVAILABLE
-#endif
-
-
-#ifdef SWIG_LONG_LONG_AVAILABLE
-SWIGINTERNINLINE PyObject* 
-SWIG_From_unsigned_SS_long_SS_long  (unsigned long long value)
-{
-  return (value > LONG_MAX) ?
-    PyLong_FromUnsignedLongLong(value) : PyInt_FromLong(static_cast< long >(value));
-}
-#endif
-
-
-SWIGINTERNINLINE PyObject *
-SWIG_From_size_t  (size_t value)
-{    
-#ifdef SWIG_LONG_LONG_AVAILABLE
-  if (sizeof(size_t) <= sizeof(unsigned long)) {
-#endif
-    return SWIG_From_unsigned_SS_long  (static_cast< unsigned long >(value));
-#ifdef SWIG_LONG_LONG_AVAILABLE
-  } else {
-    /* assume sizeof(size_t) <= sizeof(unsigned long long) */
-    return SWIG_From_unsigned_SS_long_SS_long  (static_cast< unsigned long long >(value));
-  }
-#endif
-}
+#include "../include/my_string.hpp"
 
 
 SWIGINTERN swig_type_info*
@@ -3874,6 +3822,21 @@ SWIG_AsVal_unsigned_SS_long (PyObject *obj, unsigned long *val)
 }
 
 
+#include <limits.h>
+#if !defined(SWIG_NO_LLONG_MAX)
+# if !defined(LLONG_MAX) && defined(__GNUC__) && defined (__LONG_LONG_MAX__)
+#   define LLONG_MAX __LONG_LONG_MAX__
+#   define LLONG_MIN (-LLONG_MAX - 1LL)
+#   define ULLONG_MAX (LLONG_MAX * 2ULL + 1ULL)
+# endif
+#endif
+
+
+#if defined(LLONG_MAX) && !defined(SWIG_LONG_LONG_AVAILABLE)
+#  define SWIG_LONG_LONG_AVAILABLE
+#endif
+
+
 #ifdef SWIG_LONG_LONG_AVAILABLE
 SWIGINTERN int
 SWIG_AsVal_unsigned_SS_long_SS_long (PyObject *obj, unsigned long long *val)
@@ -4055,6 +4018,43 @@ SWIG_FromCharPtr(const char *cptr)
 }
 
 
+  #define SWIG_From_long   PyInt_FromLong 
+
+
+SWIGINTERNINLINE PyObject* 
+SWIG_From_unsigned_SS_long  (unsigned long value)
+{
+  return (value > LONG_MAX) ?
+    PyLong_FromUnsignedLong(value) : PyInt_FromLong(static_cast< long >(value));
+}
+
+
+#ifdef SWIG_LONG_LONG_AVAILABLE
+SWIGINTERNINLINE PyObject* 
+SWIG_From_unsigned_SS_long_SS_long  (unsigned long long value)
+{
+  return (value > LONG_MAX) ?
+    PyLong_FromUnsignedLongLong(value) : PyInt_FromLong(static_cast< long >(value));
+}
+#endif
+
+
+SWIGINTERNINLINE PyObject *
+SWIG_From_size_t  (size_t value)
+{    
+#ifdef SWIG_LONG_LONG_AVAILABLE
+  if (sizeof(size_t) <= sizeof(unsigned long)) {
+#endif
+    return SWIG_From_unsigned_SS_long  (static_cast< unsigned long >(value));
+#ifdef SWIG_LONG_LONG_AVAILABLE
+  } else {
+    /* assume sizeof(size_t) <= sizeof(unsigned long long) */
+    return SWIG_From_unsigned_SS_long_SS_long  (static_cast< unsigned long long >(value));
+  }
+#endif
+}
+
+
 SWIGINTERNINLINE PyObject*
   SWIG_From_bool  (bool value)
 {
@@ -4090,22 +4090,6 @@ SWIGINTERN char const *MyString_py_to_string(MyString *self){
 #ifdef __cplusplus
 extern "C" {
 #endif
-SWIGINTERN int Swig_var_default_append_set(PyObject *) {
-  SWIG_Error(SWIG_AttributeError,"Variable default_append is read-only.");
-  return 1;
-}
-
-
-SWIGINTERN PyObject *Swig_var_default_append_get(void) {
-  PyObject *pyobj = 0;
-  PyObject *self = 0;
-  
-  (void)self;
-  pyobj = SWIG_From_size_t(static_cast< size_t >(default_append));
-  return pyobj;
-}
-
-
 SWIGINTERN int _wrap_new_MyString__SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **SWIGUNUSEDPARM(swig_obj)) {
   PyObject *resultobj = 0;
   MyString *result = 0 ;
@@ -6626,7 +6610,7 @@ static PyHeapTypeObject SwigPyBuiltin__MyString_type = {
     PyObject_HEAD_INIT(NULL)
     0,                                        /* ob_size */
 #endif
-    "my_string.MyString",                     /* tp_name */
+    "my_string_swig.MyString",                /* tp_name */
     sizeof(SwigPyObject),                     /* tp_basicsize */
     0,                                        /* tp_itemsize */
     _wrap_delete_MyString_destructor_closure, /* tp_dealloc */
@@ -7600,21 +7584,6 @@ SWIG_init(void) {
   
   SWIG_InstallConstants(d,swig_const_table);
   
-  globals = SWIG_globals();
-  if (!globals) {
-    PyErr_SetString(PyExc_TypeError, "Failure to create SWIG globals.");
-#if PY_VERSION_HEX >= 0x03000000
-    return NULL;
-#else
-    return;
-#endif
-  }
-  PyDict_SetItemString(md, "cvar", globals);
-  Py_DECREF(globals);
-  SwigPyBuiltin_AddPublicSymbol(public_interface, "cvar");
-  SWIG_addvarlink(globals, "default_append", Swig_var_default_append_get, Swig_var_default_append_set);
-  PyDict_SetItemString(md, "default_append", PyObject_GetAttrString(globals, "default_append"));
-  SwigPyBuiltin_AddPublicSymbol(public_interface, "default_append");
   
   /* type '::MyString' */
   builtin_pytype = (PyTypeObject *)&SwigPyBuiltin__MyString_type;
