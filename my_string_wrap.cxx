@@ -299,7 +299,7 @@ template <typename T> T SwigValueInit() {
    allows to return the 'cast rank', for example, if you have this
 
        int food(double)
-       int fooi(int);
+       int fooi(int);S
 
    and you call
 

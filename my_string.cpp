@@ -1,19 +1,17 @@
 #include "my_string.hpp"
-#include <cstring>
-#include <stdexcept>
 //Default c-tor
 MyString::MyString():
     str_{new char[capacity_]()}
 {}
 //std::string c-tor
 MyString::MyString(const std::string& arg):
-    MyString(arg.c_str())
+    MyString{arg.c_str()}
 {}
 //std::initializer_list c-tor
 MyString::MyString(std::initializer_list<char> init_list):
-    size_(init_list.size()),
-    capacity_(size_+1),
-    str_(new char[capacity_]())
+    size_{init_list.size()},
+    capacity_{size_+1},
+    str_{new char[capacity_]()}
 {
     size_t i=0;
     for(const auto elem:init_list)
@@ -21,31 +19,28 @@ MyString::MyString(std::initializer_list<char> init_list):
 }
 //count string constructor
 MyString::MyString(const char * c_str,size_t count):
-    size_(c_str ? std::strlen(c_str)*count : 0),
-    capacity_(size_+1),
-    str_( c_str ? new char[capacity_]() : nullptr)
+    size_{c_str ? std::strlen(c_str)*count : 0},
+    capacity_{size_+1},
+    str_{ c_str ? new char[capacity_]() : nullptr}
 {
     if(nullptr==c_str)
-        throw std::invalid_argument("nullptr passed to C-tor");
-    const auto len=std::strlen(c_str);
+        throw std::invalid_argument("nullptr passed to constructor");
+    const auto len{std::strlen(c_str)};
     for(size_t i=0;i<count;++i)
         std::memcpy(str_+len*i,c_str,len);
 }
 //count char constructor
 MyString::MyString(char c,size_t count):
-    size_(count),
-    capacity_(size_+1),
-    str_(new char[capacity_]())
+    size_{count},
+    capacity_{size_+1},
+    str_{new char[capacity_]()}
 {
     std::memset(str_,c,size_);
 }
 //Copy constructor
 MyString::MyString(const MyString&copy):
-    size_{copy.size_},
-    capacity_{copy.capacity_},
-    str_{new char[capacity_]()}
+    MyString{copy.c_str()}
 {
-    std::memcpy(str_,copy.str_,size_);
 }
 //Move constructor 
 MyString::MyString(MyString&&rhs):
@@ -96,9 +91,7 @@ void MyString::resize(size_t new_size)
             capacity_*=2;
     }
     //reallocate and copy
-    if(size_>new_size)
-        size_=new_size;
-    auto * new_str=new char[capacity_]();
+    auto * new_str{new char[capacity_]()};
     if(new_size<size_)
         size_=new_size;
     std::memcpy(new_str, str_, size_ );
@@ -109,10 +102,9 @@ void MyString::resize(size_t new_size)
 void MyString::append(size_t count,char c)
 {
     //make an array of count symbols and append it
-    auto * c_as_str=new char[count+1]();
-    std::memset(c_as_str,c,count);
-    append(c_as_str,0,count);
-    delete [] c_as_str;
+    std::unique_ptr<char[]>c_as_str{new char[count+1]()};
+    std::memset(c_as_str.get(),c,count);
+    append(c_as_str.get(),0,count);
 }
 void MyString::append(const char*c_str,size_t index,size_t count)
 {
@@ -120,10 +112,11 @@ void MyString::append(const char*c_str,size_t index,size_t count)
     if(default_append==count)
         count=std::strlen(c_str);
     //reallocate if needed and copy to the end
-    const auto new_size=size_+count;
+    const auto new_size{size_+count};
+    const auto old_size{size_};
     if(capacity_<new_size+1)
         resize(new_size); 
-    std::strncat(str_,c_str+index,count);
+    std::memcpy(str_+old_size,c_str+index,count);
     size_=new_size;
 }
 void MyString::append(const std::string& str,size_t index,size_t count)
@@ -131,7 +124,6 @@ void MyString::append(const std::string& str,size_t index,size_t count)
     //awoiding code duplication 
     append(str.c_str(),index,count);
 }
-//TODO check with tests
 void MyString::replace(size_t index, size_t count, const char* str)
 {
     if(str==nullptr)
@@ -149,7 +141,6 @@ void MyString::replace(size_t index, size_t count, const char* str)
     //if replacing makes string bigger we resize it so we have space for moving part to the right from replaced substr
     if(new_size>size_)
         resize(new_size);
-    //resize(new_size);
     std::memmove(str_ + new_rhs_start, str_ + old_rhs_start, old_size-old_rhs_start);
     std::memcpy(str_+index,str,arg_size);
     //if we didnt increase the string capacity, shrink capacity now since string did decrease in size
@@ -168,7 +159,7 @@ void MyString::erase(size_t index,size_t count)
 //reduce capacity to minimum of size+1 if capacity is bigger than the minimum
 void MyString::shrink_to_fit()
 {
-    const auto real_size=std::strlen(str_);
+    const auto real_size{std::strlen(str_)};
     if(capacity_-1 > real_size)
         resize(real_size);
 }
@@ -177,20 +168,20 @@ void MyString::insert(size_t index,const char * str,size_t size)
 {
     if(nullptr ==str)
         throw std::invalid_argument("nullptr passed to MyString::insert");
+    if(index>size)
+        throw std::out_of_range("MyString::insert : index was out of range");
     if(size==default_append)
         size=std::strlen(str);        
-    char * temp=new char[size+1]();
-    std::memcpy(temp,str,size);
-    replace(index,0,temp);
-    delete [] temp;
+    std::unique_ptr<char[]>temp{new char[size+1]()};
+    std::memcpy(temp.get(),str,size);
+    replace(index,0,temp.get());
 }
 //same as above but fill a temp string
 void MyString::insert(size_t index ,size_t count,char c)
 {
-    auto * temp=new char[count+1]();
-    std::memset(temp,c,count);
-    replace(index,0,temp);
-    delete [] temp;
+    std::unique_ptr<char[]> temp{new char[count+1]()};
+    std::memset(temp.get(),c,count);
+    replace(index,0,temp.get());
 }
 void MyString::insert(size_t index,const std::string&str,size_t size)
 {
@@ -202,7 +193,11 @@ and since it returns a pointer, cast ptr difference to int an return
 */
 int MyString::find(const char*str,size_t index)
 {
-    const auto result=std::strstr(str_+index,str);
+    if(index>size_)
+        throw std::out_of_range("MyString::find index was out of range!");
+    if(nullptr==str)
+        throw std::invalid_argument("nullptr passed to MyString::find");
+    const auto result{std::strstr(str_+index,str)};
     if(result!=nullptr)
         return static_cast<int>(result-str_);
     return -1;
@@ -215,44 +210,47 @@ int MyString::find(const std::string&str,size_t index)
 copy count characters to a string,then construct a temp MyString based on the string,
 and hope that compiler uses RVO here :)
 */
-//TODO add out of bounds exception
 MyString MyString::substr(size_t index,size_t count)
 {
     if(default_append==count)
         count=size_-index;
+    //maybe i should throw an exception
     if(count+index>size_)
-        throw std::out_of_range("Substring is out of range");
-    auto * temp=new char[count+1]();
-    std::memcpy(temp,str_+index,count);
-    MyString return_value(temp);
-    delete [] temp;
+        throw std::out_of_range("MyString::substr count + index was bigger than string is ");
+    std::unique_ptr<char[]> temp{new char[count+1]()};
+    std::memcpy(temp.get(),str_+index,count);
+    //idk if lifetime of temp ends before or after return 
+    MyString return_value{temp.get()};
     return return_value;
 }
 MyString operator+(const MyString&lhs,const MyString &rhs)
 {
-    MyString copy(lhs);
+    MyString copy{lhs};
     return (copy+rhs.str_);
 }
 MyString operator+(const MyString&lhs,const char*rhs)
 {
-    MyString copy(lhs);
+    MyString copy{lhs};
     copy.append(rhs);
     return copy;
 }
 MyString operator+(const MyString&lhs,const std::string&rhs)
 {
-    MyString copy(lhs);
-    return (lhs+rhs.c_str());
-}//these two can be bad if no optimization happens
+    MyString copy{lhs};
+    copy.append(rhs.c_str());
+    return copy;
+}
 MyString operator+(const char*lhs,const MyString&rhs)
 {
-    MyString copy(lhs);
-    return (copy+rhs);
+    MyString copy{lhs};
+    copy.append(rhs.c_str());
+    return copy;
 }
 MyString operator+(const std::string&lhs,const MyString&rhs)
 {
-    MyString copy(lhs);
-    return (copy+rhs);
+    MyString copy{lhs};
+    copy.append(rhs.c_str());
+    return copy;
 }
 MyString & MyString::operator+=(const char* rhs)
 {
@@ -346,7 +344,7 @@ void swap(MyString& first, MyString& second)
 char & MyString::at(int index)
 {
     if(static_cast<size_t>(index)>=size_||index<0)
-        throw std::out_of_range("invalid arg passed to MyString::at");
+        throw std::out_of_range("MyString::at : index out of range");
     return str_[index];
 }
 //some aliasing
@@ -357,55 +355,53 @@ using rcit=MyString::const_reverse_iterator;
 //all iterators methods called from class instance, where c-version differs only in 'const' modifier
 it MyString::begin()
 {
-    return it(&str_[0]);
+    return it{&str_[0]};
 }
 it MyString::end()
 {
-    return it(&str_[size_]);
+    return it{&str_[size_]};
 }
 cit MyString::begin() const 
 {
-    return cit(&str_[0]);
+    return cit{&str_[0]};
 }
 cit MyString::end() const
 {
-    return cit(&str_[size_]);
+    return cit{&str_[size_]};
 }
 cit MyString::cbegin() const
 {
-    return  MyString::begin();
+    return MyString::begin();
 }
 cit MyString::cend() const
 {
-    return  MyString::end();
+    return MyString::end();
 }
 rit MyString::rbegin()
 {
-    return reverse_iterator(&str_[size_-1]);
+    return rit{&str_[size_-1]};
 }
 rit MyString::rend()
 {
-    return reverse_iterator(&str_[0]-1);
+    return rit{&str_[0]-1};
 }
 rcit MyString::rcbegin() const
 {
-    return rcit(&str_[size_-1]);
+    return rcit{&str_[size_-1]};
 }
 rcit MyString::rcend() const
 {
-    return rcit(&str_[0]-1);
+    return rcit{&str_[0]-1};
 }
 rcit MyString::rbegin() const
 {
-    return rcit(&str_[size_-1]);
+    return rcit{&str_[size_-1]};
 }
 rcit MyString::rend() const
 {
-    return rcit(&str_[0]-1);
+    return rcit{&str_[0]-1};
 }
 MyString::~MyString()
 {
-    //std::cout<<"call"<<std::endl;
-    //int four=2+2;
     delete [] str_;
 }

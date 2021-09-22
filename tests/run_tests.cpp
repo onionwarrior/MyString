@@ -4,6 +4,7 @@
 #include "insert_tests.cpp"
 #include "substr_tests.cpp"
 #include "find_tests.cpp"
+#include "to_tests.cpp"
 int main()
 {
     do_constructor_tests();
@@ -11,5 +12,6 @@ int main()
     do_replace_tests();
     do_insert_tests();
     do_substr_tests();
-    do_find_tests();
+    do_find_tests();    
+    do_to_tests();
 }

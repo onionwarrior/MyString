@@ -2,39 +2,38 @@
 #include <string>
 #include <iostream>
 #include <type_traits>
-#include <functional>
 #include <cstring>
+#include <inttypes.h>
+#include <stdexcept>
+#include <memory>
 //no magic numbers
-constexpr size_t default_append = -1;
 //No point in inheriting MyString
 class MyString 
 {
+    static constexpr size_t default_append = -1;
     size_t size_ = 0;
     size_t capacity_ = 1;
     char *str_ = nullptr;
-    //these private methods are parts of internal implementation, therefore user must not have direct access to them
+    //these private methods are parts of internal implementation, therefore caller must not have direct access to them
     void resize(size_t);
     template <typename ArgType>
     ArgType to_impl(std::true_type const &)
     {
-        if constexpr (std::is_signed_v<ArgType>)
-        {
-            int64_t ret_val = 0;
-            sscanf(str_, "%lld", &ret_val);
-            return static_cast<ArgType>(ret_val);
-        }
-        else
-        {
-            uint64_t ret_val = 0;
-            sscanf(str_, "%llu", &ret_val);
-            return static_cast<ArgType>(ret_val);
-        }
+        static constexpr auto is_signed=std::is_signed_v<ArgType>;
+        using ret_val_type=std::conditional_t<is_signed, int64_t, uint64_t>;
+        static constexpr auto format=is_signed?"%" PRId64 "":"%" PRIu64 "";
+        ret_val_type ret_val{0};
+        auto scanf_result{sscanf(str_, format, &ret_val)};
+        if(scanf_result<1)
+            throw InvalidConversion("Could not convert to an integer");
+        return static_cast<ArgType>(ret_val);
     }
     template <typename ArgType>
     ArgType to_impl(std::false_type const &)
     {
-        auto ret_val = 0.0;
-        sscanf(str_, "%lf", &ret_val);
+        auto ret_val{0.0};
+        if(sscanf(str_, "%lf", &ret_val)<1)
+            throw InvalidConversion("Could not convert to a float");
         return static_cast<ArgType>(ret_val);
     }
 public:
@@ -42,7 +41,7 @@ public:
     template <bool IsConst,bool IsReverse>
     struct Iterator
     {
-        //defining iterator traits for our iterator using tag dispatch(?legacy mechanish, c++20 uses concepts)
+        //defining iterator traits for our iterator using tag dispatch(?)
         using iterator_category = std::forward_iterator_tag;
         using difference_type = std::ptrdiff_t;
         using value_type = char;
@@ -222,14 +221,14 @@ public:
     MyString(char, size_t);
     MyString(const MyString &);
     //could use stringstreams here, but we are not cutting any corners (also definetely not portable due to format string)
-    /*
+    //if only type based pattern matching was a thing...
     template<typename T,std::enable_if_t<std::is_integral<T>::value, bool> = true>
     MyString(T arg):size_{128},capacity_{size_+1},str_{new char[capacity_]()}
     {
         if constexpr(std::is_signed<T>::value)
-            std::snprintf(str_,size_,"%lld",static_cast<int64_t>(arg));
+            std::snprintf(str_,size_,"%" PRId64 "",static_cast<int64_t>(arg));
         else
-            std::snprintf(str_,size_,"%llu",static_cast<uint64_t>(arg));
+            std::snprintf(str_,size_,"%" PRIu64 "",static_cast<uint64_t>(arg));
         shrink_to_fit();
     }
     template<typename T,std::enable_if_t<std::is_floating_point<T>::value, bool> = true>
@@ -240,7 +239,7 @@ public:
         else
             std::snprintf(str_,size_,"%lf",arg);
         shrink_to_fit();
-    }*/
+    }
     friend void swap(MyString &first, MyString &second);
     char *c_str() const;
     char *data() const;
