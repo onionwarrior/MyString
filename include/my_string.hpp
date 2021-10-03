@@ -1,4 +1,6 @@
-#pragma once
+#ifndef MY_STRING_H
+#define MY_STRING_H
+#include <map>
 #include <string>
 #include <iostream>
 #include <type_traits>
@@ -6,22 +8,22 @@
 #include <inttypes.h>
 #include <stdexcept>
 #include <memory>
-//no magic numbers
-//No point in inheriting MyString
+#include <vector>
+#include "aho_corasick.hpp"
+//no magic numberss
 class MyString 
 {
-    static constexpr size_t default_append = -1;
-    size_t size_ = 0;
-    size_t capacity_ = 1;
-    char *str_ = nullptr;
-    //these private methods are parts of internal implementation, therefore caller must not have direct access to them
+    static constexpr size_t default_append{static_cast<size_t>(-1)};
+    size_t size_{0};
+    size_t capacity_{1};
+    char *str_{nullptr};
     void resize(size_t);
     template <typename ArgType>
     ArgType to_impl(std::true_type const &)
     {
-        static constexpr auto is_signed=std::is_signed_v<ArgType>;
+        static constexpr auto is_signed{std::is_signed_v<ArgType>};
         using ret_val_type=std::conditional_t<is_signed, int64_t, uint64_t>;
-        static constexpr auto format=is_signed?"%" PRId64 "":"%" PRIu64 "";
+        static constexpr auto format{is_signed?"%" PRId64 "":"%" PRIu64 ""};
         ret_val_type ret_val{0};
         auto scanf_result{sscanf(str_, format, &ret_val)};
         if(scanf_result<1)
@@ -37,6 +39,7 @@ class MyString
         return static_cast<ArgType>(ret_val);
     }
 public:
+    using AhoCorasickResult=std::map < std::string, std::vector <int> >;
     //making iterator a template, so we dont have to redeclare similar code 4 times for different iterators
     template <bool IsConst,bool IsReverse>
     struct Iterator
@@ -145,71 +148,68 @@ public:
     */
     //use base() for reverse iterators
     //less characters is better (i guess)
-    template< bool B, class T = void >
-    using enable = std::enable_if_t<B,T>;
-    template <bool IsConst, bool IsReverse>
-    enable<!IsReverse>
-    insert(Iterator<IsConst,IsReverse> it, size_t count , char c)
+    template <bool IsConst>
+    void
+    insert(Iterator<IsConst,false> it, size_t count , char c)
     {
         insert(static_cast<size_t>(it.operator->()-str_),count,c);
     }
-    template <bool IsConst, bool IsReverse>
-    enable<!IsReverse>
-    insert(Iterator<IsConst,IsReverse> it, const char *str, size_t count= default_append)
+    template <bool IsConst>
+    void
+    insert(Iterator<IsConst,false> it, const char *str, size_t count= default_append)
+    {
+        insert(static_cast<size_t>(it.operator->()-str_),str,count);
+    }
+    template <bool IsConst>
+    void    
+    insert(Iterator<IsConst,false> it, const std::string & str, size_t count = default_append)
     {
         insert(static_cast<size_t>(it.operator->()-str_),str,count);
     }
     template <bool IsConst, bool IsReverse>
-    enable<!IsReverse>
-    insert(Iterator<IsConst,IsReverse> it, const std::string & str, size_t count = default_append)
-    {
-        insert(static_cast<size_t>(it.operator->()-str_),str,count);
-    }
-    template <bool IsConst, bool IsReverse>
-    enable<!IsReverse>
-    erase(Iterator<IsConst,IsReverse> it,size_t count )
+    void
+    erase(Iterator<IsConst,false> it,size_t count )
     {
         erase(static_cast<size_t>(it.operator->()-str_),count);
     }
     template <bool IsConst, bool IsReverse>
-    enable<!IsReverse>
-    append(const std::string&str,Iterator<IsConst,IsReverse>it, size_t count=default_append)
+    void
+    append(const std::string&str,Iterator<IsConst,false>it, size_t count=default_append)
     {
         append(str,static_cast<size_t>(it.operator->()-str_),count);
     }
     template <bool IsConst, bool IsReverse>
-    enable<!IsReverse>
-    append(const char *str,Iterator<IsConst,IsReverse>it, size_t count=default_append)
+    void
+    append(const char *str,Iterator<IsConst,false>it, size_t count=default_append)
     {
         append(str,static_cast<size_t>(it.operator->()-str_),count);
     }
-    template <bool IsConst, bool IsReverse>
-    enable<!IsReverse>
-    replace(Iterator<IsConst,IsReverse>it,size_t count,const char*str)
+    template <bool IsConst>
+    void
+    replace(Iterator<IsConst,false>it,size_t count,const char*str)
     {
         replace(static_cast<size_t>(it.operator->()-str_),count,str);
     }
-    template <bool IsConst, bool IsReverse>
-    enable<!IsReverse>
-    replace(Iterator<IsConst,IsReverse>it ,size_t count,const std::string&str)
+    template <bool IsConst>
+    void replace(Iterator<IsConst,false>it ,size_t count,const std::string&str)
     {
         replace(static_cast<size_t>(it.operator->()-str_),count,str);
     }
-    template <bool IsConst, bool IsReverse>
-    enable<!IsReverse,MyString>
-    substr(Iterator<IsConst,IsReverse> it, size_t count=default_append)
+    template <bool IsConst>
+    MyString
+    substr(Iterator<IsConst,false> it, size_t count=default_append)
     {
         return substr(static_cast<size_t>(it.operator->()-str_),count);
     }
-    template <bool IsConst, bool IsReverse>
-    enable<!IsReverse,int>
-    find(const char*str, Iterator<IsConst,IsReverse> it)
+    template <bool IsConst>
+    int
+    find(const char*str, Iterator<IsConst,false> it)
     {
         return find(str,static_cast<size_t>(it.operator->()-str_));
     }
-    template <bool IsConst, bool IsReverse>
-    enable<!IsReverse,int>
-    find(const std::string&str, Iterator<IsConst,IsReverse> it)
+    template <bool IsConst>
+    int
+    find(const std::string&str, Iterator<IsConst,false> it)
     {
        return find(str,static_cast<size_t>(it.operator->()-str_));
     }
@@ -217,11 +217,11 @@ public:
     MyString(const std::string &);
     MyString(std::initializer_list<char>);
     MyString(MyString &&);
-    MyString(const char *, size_t=1);
+    MyString(const char *,size_t =default_append);
     MyString(char, size_t);
     MyString(const MyString &);
     //could use stringstreams here, but we are not cutting any corners (also definetely not portable due to format string)
-    //if only type based pattern matching was a thing...
+    //if only pattern matching was a thing...
     template<typename T,std::enable_if_t<std::is_integral<T>::value, bool> = true>
     MyString(T arg):size_{128},capacity_{size_+1},str_{new char[capacity_]()}
     {
@@ -259,6 +259,7 @@ public:
     MyString substr(size_t, size_t = default_append);
     int find(const char *, size_t = 0);
     int find(const std::string &, size_t = 0);
+    AhoCorasickResult find(const std::vector<std::string>&diy);
     void erase(size_t, size_t);
     void shrink_to_fit();
     friend MyString operator+(const MyString &,const MyString &);
@@ -326,3 +327,4 @@ std::basic_istream<T> &operator>>(std::basic_istream<T> &in, MyString &str)
     }
     return in;
 }
+#endif

@@ -3443,20 +3443,23 @@ SWIGINTERN PyObject *SWIG_PyStaticMethod_New(PyObject *SWIGUNUSEDPARM(self), PyO
 
 /* -------- TYPES TABLE (BEGIN) -------- */
 
-#define SWIGTYPE_p_MyString swig_types[0]
-#define SWIGTYPE_p_MyString__IteratorT_false_false_t swig_types[1]
-#define SWIGTYPE_p_MyString__IteratorT_false_true_t swig_types[2]
-#define SWIGTYPE_p_MyString__IteratorT_true_false_t swig_types[3]
-#define SWIGTYPE_p_MyString__IteratorT_true_true_t swig_types[4]
-#define SWIGTYPE_p_SwigPyObject swig_types[5]
-#define SWIGTYPE_p_char swig_types[6]
-#define SWIGTYPE_p_const_iterator swig_types[7]
-#define SWIGTYPE_p_const_reverse_iterator swig_types[8]
-#define SWIGTYPE_p_iterator swig_types[9]
-#define SWIGTYPE_p_reverse_iterator swig_types[10]
-#define SWIGTYPE_p_std__string swig_types[11]
-static swig_type_info *swig_types[13];
-static swig_module_info swig_module = {swig_types, 12, 0, 0, 0, 0};
+#define SWIGTYPE_p_AhoCorasickResult swig_types[0]
+#define SWIGTYPE_p_MyString swig_types[1]
+#define SWIGTYPE_p_MyString__IteratorT_false_false_t swig_types[2]
+#define SWIGTYPE_p_MyString__IteratorT_false_true_t swig_types[3]
+#define SWIGTYPE_p_MyString__IteratorT_true_false_t swig_types[4]
+#define SWIGTYPE_p_MyString__IteratorT_true_true_t swig_types[5]
+#define SWIGTYPE_p_SwigPyObject swig_types[6]
+#define SWIGTYPE_p_char swig_types[7]
+#define SWIGTYPE_p_const_iterator swig_types[8]
+#define SWIGTYPE_p_const_reverse_iterator swig_types[9]
+#define SWIGTYPE_p_iterator swig_types[10]
+#define SWIGTYPE_p_reverse_iterator swig_types[11]
+#define SWIGTYPE_p_std__mapT_std__string_std__vectorT_int_t_t swig_types[12]
+#define SWIGTYPE_p_std__string swig_types[13]
+#define SWIGTYPE_p_std__vectorT_std__string_t swig_types[14]
+static swig_type_info *swig_types[16];
+static swig_module_info swig_module = {swig_types, 15, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -4084,6 +4087,63 @@ SWIG_AsVal_int (PyObject * obj, int *val)
   return res;
 }
 
+SWIGINTERN MyString MyString___add____SWIG_0(MyString *self,MyString const &rhs){
+        return operator+(*self,rhs);
+    }
+SWIGINTERN bool MyString___eq____SWIG_0(MyString *self,MyString const &rhs){
+        return operator==(*self,rhs);
+    }
+SWIGINTERN bool MyString___ne____SWIG_0(MyString *self,MyString const &rhs){
+        return operator!=(*self,rhs);
+    }
+SWIGINTERN bool MyString___eq____SWIG_1(MyString *self,char const *rhs){
+        return operator==(*self,rhs);
+    }
+SWIGINTERN bool MyString___ne____SWIG_1(MyString *self,char const *rhs){
+        return operator!=(*self,rhs);
+    }
+SWIGINTERN MyString MyString___add____SWIG_1(MyString *self,char const *rhs){
+        return operator+(*self,rhs);
+    }
+SWIGINTERN bool MyString___lt__(MyString *self,MyString const &rhs){
+        return operator<(*self,rhs);
+    }
+SWIGINTERN bool MyString___le__(MyString *self,MyString const &rhs){
+        return operator<=(*self,rhs);
+    }
+SWIGINTERN bool MyString___gt__(MyString *self,MyString const &rhs){
+        return operator>(*self,rhs);
+    }
+SWIGINTERN bool MyString___ge__(MyString *self,MyString const &rhs){
+        return operator>=(*self,rhs);
+    }
+
+SWIGINTERN int
+SWIG_AsVal_unsigned_SS_int (PyObject * obj, unsigned int *val)
+{
+  unsigned long v;
+  int res = SWIG_AsVal_unsigned_SS_long (obj, &v);
+  if (SWIG_IsOK(res)) {
+    if ((v > UINT_MAX)) {
+      return SWIG_OverflowError;
+    } else {
+      if (val) *val = static_cast< unsigned int >(v);
+    }
+  }  
+  return res;
+}
+
+SWIGINTERN char MyString___getitem__(MyString *self,unsigned int i){	
+        return (*self)[i];
+    }
+
+SWIGINTERNINLINE PyObject *
+SWIG_From_char  (char c) 
+{ 
+  return SWIG_FromCharPtrAndSize(&c,1);
+}
+
+SWIGINTERN void MyString___setitem__(MyString *self,unsigned int i,char v){	(*self)[i]=v;	}
 SWIGINTERN char const *MyString_py_to_string(MyString *self){
         return self->c_str();
     }
@@ -5767,6 +5827,38 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_MyString_find__SWIG_6(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  MyString *arg1 = (MyString *) 0 ;
+  std::vector< std::string > *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  MyString::AhoCorasickResult result;
+  
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_MyString, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MyString_find" "', argument " "1"" of type '" "MyString *""'"); 
+  }
+  arg1 = reinterpret_cast< MyString * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_std__vectorT_std__string_t,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "MyString_find" "', argument " "2"" of type '" "std::vector< std::string > const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "MyString_find" "', argument " "2"" of type '" "std::vector< std::string > const &""'"); 
+  }
+  arg2 = reinterpret_cast< std::vector< std::string > * >(argp2);
+  result = (arg1)->find((std::vector< std::string > const &)*arg2);
+  resultobj = SWIG_NewPointerObj((new MyString::AhoCorasickResult(static_cast< const MyString::AhoCorasickResult& >(result))), SWIGTYPE_p_std__mapT_std__string_std__vectorT_int_t_t, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_MyString_find(PyObject *self, PyObject *args) {
   Py_ssize_t argc;
   PyObject *argv[4] = {
@@ -5785,6 +5877,19 @@ SWIGINTERN PyObject *_wrap_MyString_find(PyObject *self, PyObject *args) {
       _v = SWIG_CheckState(res);
       if (_v) {
         return _wrap_MyString_find__SWIG_5(self, argc, argv);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_MyString, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_std__vectorT_std__string_t, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_MyString_find__SWIG_6(self, argc, argv);
       }
     }
   }
@@ -5846,7 +5951,8 @@ fail:
     "    MyString::find(char const *,size_t)\n"
     "    MyString::find(char const *)\n"
     "    MyString::find(std::string const &,size_t)\n"
-    "    MyString::find(std::string const &)\n");
+    "    MyString::find(std::string const &)\n"
+    "    MyString::find(std::vector< std::string > const &)\n");
   return 0;
 }
 
@@ -6515,6 +6621,545 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_MyString___add____SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  MyString *arg1 = (MyString *) 0 ;
+  MyString *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  MyString result;
+  
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_MyString, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MyString___add__" "', argument " "1"" of type '" "MyString *""'"); 
+  }
+  arg1 = reinterpret_cast< MyString * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_MyString,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "MyString___add__" "', argument " "2"" of type '" "MyString const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "MyString___add__" "', argument " "2"" of type '" "MyString const &""'"); 
+  }
+  arg2 = reinterpret_cast< MyString * >(argp2);
+  result = MyString___add____SWIG_0(arg1,(MyString const &)*arg2);
+  resultobj = SWIG_NewPointerObj((new MyString(static_cast< const MyString& >(result))), SWIGTYPE_p_MyString, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  PyErr_Clear();
+  Py_INCREF(Py_NotImplemented);
+  return Py_NotImplemented;
+}
+
+
+SWIGINTERN PyObject *_wrap_MyString___eq____SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  MyString *arg1 = (MyString *) 0 ;
+  MyString *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  bool result;
+  
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_MyString, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MyString___eq__" "', argument " "1"" of type '" "MyString *""'"); 
+  }
+  arg1 = reinterpret_cast< MyString * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_MyString,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "MyString___eq__" "', argument " "2"" of type '" "MyString const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "MyString___eq__" "', argument " "2"" of type '" "MyString const &""'"); 
+  }
+  arg2 = reinterpret_cast< MyString * >(argp2);
+  result = (bool)MyString___eq____SWIG_0(arg1,(MyString const &)*arg2);
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  PyErr_Clear();
+  Py_INCREF(Py_NotImplemented);
+  return Py_NotImplemented;
+}
+
+
+SWIGINTERN PyObject *_wrap_MyString___ne____SWIG_0(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  MyString *arg1 = (MyString *) 0 ;
+  MyString *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  bool result;
+  
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_MyString, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MyString___ne__" "', argument " "1"" of type '" "MyString *""'"); 
+  }
+  arg1 = reinterpret_cast< MyString * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[1], &argp2, SWIGTYPE_p_MyString,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "MyString___ne__" "', argument " "2"" of type '" "MyString const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "MyString___ne__" "', argument " "2"" of type '" "MyString const &""'"); 
+  }
+  arg2 = reinterpret_cast< MyString * >(argp2);
+  result = (bool)MyString___ne____SWIG_0(arg1,(MyString const &)*arg2);
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  PyErr_Clear();
+  Py_INCREF(Py_NotImplemented);
+  return Py_NotImplemented;
+}
+
+
+SWIGINTERN PyObject *_wrap_MyString___eq____SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  MyString *arg1 = (MyString *) 0 ;
+  char *arg2 = (char *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 ;
+  char *buf2 = 0 ;
+  int alloc2 = 0 ;
+  bool result;
+  
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_MyString, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MyString___eq__" "', argument " "1"" of type '" "MyString *""'"); 
+  }
+  arg1 = reinterpret_cast< MyString * >(argp1);
+  res2 = SWIG_AsCharPtrAndSize(swig_obj[1], &buf2, NULL, &alloc2);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "MyString___eq__" "', argument " "2"" of type '" "char const *""'");
+  }
+  arg2 = reinterpret_cast< char * >(buf2);
+  result = (bool)MyString___eq____SWIG_1(arg1,(char const *)arg2);
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  if (alloc2 == SWIG_NEWOBJ) delete[] buf2;
+  return resultobj;
+fail:
+  if (alloc2 == SWIG_NEWOBJ) delete[] buf2;
+  PyErr_Clear();
+  Py_INCREF(Py_NotImplemented);
+  return Py_NotImplemented;
+}
+
+
+SWIGINTERN PyObject *_wrap_MyString___eq__(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "MyString___eq__", 0, 2, argv+1))) SWIG_fail;
+  argv[0] = self;
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_MyString, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_MyString, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_MyString___eq____SWIG_0(self, argc, argv);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_MyString, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsCharPtrAndSize(argv[1], 0, NULL, 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_MyString___eq____SWIG_1(self, argc, argv);
+      }
+    }
+  }
+  
+fail:
+  Py_INCREF(Py_NotImplemented);
+  return Py_NotImplemented;
+}
+
+
+SWIGINTERN PyObject *_wrap_MyString___ne____SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  MyString *arg1 = (MyString *) 0 ;
+  char *arg2 = (char *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 ;
+  char *buf2 = 0 ;
+  int alloc2 = 0 ;
+  bool result;
+  
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_MyString, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MyString___ne__" "', argument " "1"" of type '" "MyString *""'"); 
+  }
+  arg1 = reinterpret_cast< MyString * >(argp1);
+  res2 = SWIG_AsCharPtrAndSize(swig_obj[1], &buf2, NULL, &alloc2);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "MyString___ne__" "', argument " "2"" of type '" "char const *""'");
+  }
+  arg2 = reinterpret_cast< char * >(buf2);
+  result = (bool)MyString___ne____SWIG_1(arg1,(char const *)arg2);
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  if (alloc2 == SWIG_NEWOBJ) delete[] buf2;
+  return resultobj;
+fail:
+  if (alloc2 == SWIG_NEWOBJ) delete[] buf2;
+  PyErr_Clear();
+  Py_INCREF(Py_NotImplemented);
+  return Py_NotImplemented;
+}
+
+
+SWIGINTERN PyObject *_wrap_MyString___ne__(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "MyString___ne__", 0, 2, argv+1))) SWIG_fail;
+  argv[0] = self;
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_MyString, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_MyString, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_MyString___ne____SWIG_0(self, argc, argv);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_MyString, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsCharPtrAndSize(argv[1], 0, NULL, 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_MyString___ne____SWIG_1(self, argc, argv);
+      }
+    }
+  }
+  
+fail:
+  Py_INCREF(Py_NotImplemented);
+  return Py_NotImplemented;
+}
+
+
+SWIGINTERN PyObject *_wrap_MyString___add____SWIG_1(PyObject *self, Py_ssize_t nobjs, PyObject **swig_obj) {
+  PyObject *resultobj = 0;
+  MyString *arg1 = (MyString *) 0 ;
+  char *arg2 = (char *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int res2 ;
+  char *buf2 = 0 ;
+  int alloc2 = 0 ;
+  MyString result;
+  
+  if ((nobjs < 2) || (nobjs > 2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_MyString, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MyString___add__" "', argument " "1"" of type '" "MyString *""'"); 
+  }
+  arg1 = reinterpret_cast< MyString * >(argp1);
+  res2 = SWIG_AsCharPtrAndSize(swig_obj[1], &buf2, NULL, &alloc2);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "MyString___add__" "', argument " "2"" of type '" "char const *""'");
+  }
+  arg2 = reinterpret_cast< char * >(buf2);
+  result = MyString___add____SWIG_1(arg1,(char const *)arg2);
+  resultobj = SWIG_NewPointerObj((new MyString(static_cast< const MyString& >(result))), SWIGTYPE_p_MyString, SWIG_POINTER_OWN |  0 );
+  if (alloc2 == SWIG_NEWOBJ) delete[] buf2;
+  return resultobj;
+fail:
+  if (alloc2 == SWIG_NEWOBJ) delete[] buf2;
+  PyErr_Clear();
+  Py_INCREF(Py_NotImplemented);
+  return Py_NotImplemented;
+}
+
+
+SWIGINTERN PyObject *_wrap_MyString___add__(PyObject *self, PyObject *args) {
+  Py_ssize_t argc;
+  PyObject *argv[3] = {
+    0
+  };
+  
+  if (!(argc = SWIG_Python_UnpackTuple(args, "MyString___add__", 0, 2, argv+1))) SWIG_fail;
+  argv[0] = self;
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_MyString, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_ConvertPtr(argv[1], 0, SWIGTYPE_p_MyString, SWIG_POINTER_NO_NULL | 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_MyString___add____SWIG_0(self, argc, argv);
+      }
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    void *vptr = 0;
+    int res = SWIG_ConvertPtr(argv[0], &vptr, SWIGTYPE_p_MyString, 0);
+    _v = SWIG_CheckState(res);
+    if (_v) {
+      int res = SWIG_AsCharPtrAndSize(argv[1], 0, NULL, 0);
+      _v = SWIG_CheckState(res);
+      if (_v) {
+        return _wrap_MyString___add____SWIG_1(self, argc, argv);
+      }
+    }
+  }
+  
+fail:
+  Py_INCREF(Py_NotImplemented);
+  return Py_NotImplemented;
+}
+
+
+SWIGINTERN PyObject *_wrap_MyString___lt__(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  MyString *arg1 = (MyString *) 0 ;
+  MyString *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  bool result;
+  
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_MyString, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MyString___lt__" "', argument " "1"" of type '" "MyString *""'"); 
+  }
+  arg1 = reinterpret_cast< MyString * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[0], &argp2, SWIGTYPE_p_MyString,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "MyString___lt__" "', argument " "2"" of type '" "MyString const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "MyString___lt__" "', argument " "2"" of type '" "MyString const &""'"); 
+  }
+  arg2 = reinterpret_cast< MyString * >(argp2);
+  result = (bool)MyString___lt__(arg1,(MyString const &)*arg2);
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  PyErr_Clear();
+  Py_INCREF(Py_NotImplemented);
+  return Py_NotImplemented;
+}
+
+
+SWIGINTERN PyObject *_wrap_MyString___le__(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  MyString *arg1 = (MyString *) 0 ;
+  MyString *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  bool result;
+  
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_MyString, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MyString___le__" "', argument " "1"" of type '" "MyString *""'"); 
+  }
+  arg1 = reinterpret_cast< MyString * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[0], &argp2, SWIGTYPE_p_MyString,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "MyString___le__" "', argument " "2"" of type '" "MyString const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "MyString___le__" "', argument " "2"" of type '" "MyString const &""'"); 
+  }
+  arg2 = reinterpret_cast< MyString * >(argp2);
+  result = (bool)MyString___le__(arg1,(MyString const &)*arg2);
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  PyErr_Clear();
+  Py_INCREF(Py_NotImplemented);
+  return Py_NotImplemented;
+}
+
+
+SWIGINTERN PyObject *_wrap_MyString___gt__(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  MyString *arg1 = (MyString *) 0 ;
+  MyString *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  bool result;
+  
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_MyString, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MyString___gt__" "', argument " "1"" of type '" "MyString *""'"); 
+  }
+  arg1 = reinterpret_cast< MyString * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[0], &argp2, SWIGTYPE_p_MyString,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "MyString___gt__" "', argument " "2"" of type '" "MyString const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "MyString___gt__" "', argument " "2"" of type '" "MyString const &""'"); 
+  }
+  arg2 = reinterpret_cast< MyString * >(argp2);
+  result = (bool)MyString___gt__(arg1,(MyString const &)*arg2);
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  PyErr_Clear();
+  Py_INCREF(Py_NotImplemented);
+  return Py_NotImplemented;
+}
+
+
+SWIGINTERN PyObject *_wrap_MyString___ge__(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  MyString *arg1 = (MyString *) 0 ;
+  MyString *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject *swig_obj[2] ;
+  bool result;
+  
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_MyString, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MyString___ge__" "', argument " "1"" of type '" "MyString *""'"); 
+  }
+  arg1 = reinterpret_cast< MyString * >(argp1);
+  res2 = SWIG_ConvertPtr(swig_obj[0], &argp2, SWIGTYPE_p_MyString,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "MyString___ge__" "', argument " "2"" of type '" "MyString const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "MyString___ge__" "', argument " "2"" of type '" "MyString const &""'"); 
+  }
+  arg2 = reinterpret_cast< MyString * >(argp2);
+  result = (bool)MyString___ge__(arg1,(MyString const &)*arg2);
+  resultobj = SWIG_From_bool(static_cast< bool >(result));
+  return resultobj;
+fail:
+  PyErr_Clear();
+  Py_INCREF(Py_NotImplemented);
+  return Py_NotImplemented;
+}
+
+
+SWIGINTERN PyObject *_wrap_MyString___getitem__(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  MyString *arg1 = (MyString *) 0 ;
+  unsigned int arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  PyObject *swig_obj[2] ;
+  char result;
+  
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_MyString, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MyString___getitem__" "', argument " "1"" of type '" "MyString *""'"); 
+  }
+  arg1 = reinterpret_cast< MyString * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(swig_obj[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "MyString___getitem__" "', argument " "2"" of type '" "unsigned int""'");
+  } 
+  arg2 = static_cast< unsigned int >(val2);
+  result = (char)MyString___getitem__(arg1,arg2);
+  resultobj = SWIG_From_char(static_cast< char >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_MyString___setitem__(PyObject *self, PyObject *args) {
+  PyObject *resultobj = 0;
+  MyString *arg1 = (MyString *) 0 ;
+  unsigned int arg2 ;
+  char arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  unsigned int val2 ;
+  int ecode2 = 0 ;
+  char val3 ;
+  int ecode3 = 0 ;
+  PyObject *swig_obj[3] ;
+  
+  if (!SWIG_Python_UnpackTuple(args, "MyString___setitem__", 2, 2, swig_obj)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(self, &argp1,SWIGTYPE_p_MyString, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "MyString___setitem__" "', argument " "1"" of type '" "MyString *""'"); 
+  }
+  arg1 = reinterpret_cast< MyString * >(argp1);
+  ecode2 = SWIG_AsVal_unsigned_SS_int(swig_obj[0], &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "MyString___setitem__" "', argument " "2"" of type '" "unsigned int""'");
+  } 
+  arg2 = static_cast< unsigned int >(val2);
+  ecode3 = SWIG_AsVal_char(swig_obj[1], &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "MyString___setitem__" "', argument " "3"" of type '" "char""'");
+  } 
+  arg3 = static_cast< char >(val3);
+  MyString___setitem__(arg1,arg2,arg3);
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_MyString_py_to_string(PyObject *self, PyObject *args) {
   PyObject *resultobj = 0;
   MyString *arg1 = (MyString *) 0 ;
@@ -6541,6 +7186,8 @@ SWIGPY_BINARYFUNC_CLOSURE(_wrap_MyString___iadd__) /* defines _wrap_MyString___i
 
 SWIGPY_DESTRUCTOR_CLOSURE(_wrap_delete_MyString) /* defines _wrap_delete_MyString_destructor_closure */
 
+SWIGPY_BINARYFUNC_CLOSURE(_wrap_MyString___add__) /* defines _wrap_MyString___add___binaryfunc_closure */
+
 SWIGPY_REPRFUNC_CLOSURE(_wrap_MyString_py_to_string) /* defines _wrap_MyString_py_to_string_reprfunc_closure */
 
 static PyMethodDef SwigMethods[] = {
@@ -6562,6 +7209,15 @@ SWIGINTERN PyGetSetDef SwigPyBuiltin__MyString_getset[] = {
 SWIGINTERN PyObject *
 SwigPyBuiltin__MyString_richcompare(PyObject *self, PyObject *other, int op) {
   PyObject *result = NULL;
+  switch (op) {
+    case Py_EQ : result = _wrap_MyString___eq__(self, other); break;
+    case Py_LE : result = _wrap_MyString___le__(self, other); break;
+    case Py_NE : result = _wrap_MyString___ne__(self, other); break;
+    case Py_LT : result = _wrap_MyString___lt__(self, other); break;
+    case Py_GE : result = _wrap_MyString___ge__(self, other); break;
+    case Py_GT : result = _wrap_MyString___gt__(self, other); break;
+    default : break;
+  }
   if (!result) {
     if (SwigPyObject_Check(self) && SwigPyObject_Check(other)) {
       result = SwigPyObject_richcompare((SwigPyObject *)self, (SwigPyObject *)other, op);
@@ -6598,6 +7254,15 @@ SWIGINTERN PyMethodDef SwigPyBuiltin__MyString_methods[] = {
   { "rend", _wrap_MyString_rend, METH_VARARGS, "" },
   { "rcbegin", _wrap_MyString_rcbegin, METH_NOARGS, "" },
   { "rcend", _wrap_MyString_rcend, METH_NOARGS, "" },
+  { "__add__", _wrap_MyString___add__, METH_VARARGS, "" },
+  { "__eq__", _wrap_MyString___eq__, METH_VARARGS, "" },
+  { "__ne__", _wrap_MyString___ne__, METH_VARARGS, "" },
+  { "__lt__", _wrap_MyString___lt__, METH_O, "" },
+  { "__le__", _wrap_MyString___le__, METH_O, "" },
+  { "__gt__", _wrap_MyString___gt__, METH_O, "" },
+  { "__ge__", _wrap_MyString___ge__, METH_O, "" },
+  { "__getitem__", _wrap_MyString___getitem__, METH_O, "" },
+  { "__setitem__", _wrap_MyString___setitem__, METH_VARARGS, "" },
   { "py_to_string", _wrap_MyString_py_to_string, METH_NOARGS, "" },
   { NULL, NULL, 0, NULL } /* Sentinel */
 };
@@ -6689,7 +7354,7 @@ static PyHeapTypeObject SwigPyBuiltin__MyString_type = {
   },
 #endif
   {
-    (binaryfunc) 0,                           /* nb_add */
+    _wrap_MyString___add___binaryfunc_closure,/* nb_add */
     (binaryfunc) 0,                           /* nb_subtract */
     (binaryfunc) 0,                           /* nb_multiply */
 #if PY_VERSION_HEX < 0x03000000
@@ -6793,6 +7458,7 @@ SWIGINTERN SwigPyClientData SwigPyBuiltin__MyString_clientdata = {0, 0, 0, 0, 0,
 
 /* -------- TYPE CONVERSION AND EQUIVALENCE RULES (BEGIN) -------- */
 
+static swig_type_info _swigt__p_AhoCorasickResult = {"_p_AhoCorasickResult", "AhoCorasickResult *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_MyString = {"_p_MyString", "MyString *", 0, 0, (void*)&SwigPyBuiltin__MyString_clientdata, 0};
 static swig_type_info _swigt__p_MyString__IteratorT_false_false_t = {"_p_MyString__IteratorT_false_false_t", "MyString::iterator *|MyString::Iterator< false,false > *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_MyString__IteratorT_false_true_t = {"_p_MyString__IteratorT_false_true_t", "MyString::Iterator< false,true > *|MyString::reverse_iterator *", 0, 0, (void*)0, 0};
@@ -6804,9 +7470,12 @@ static swig_type_info _swigt__p_const_iterator = {"_p_const_iterator", "const_it
 static swig_type_info _swigt__p_const_reverse_iterator = {"_p_const_reverse_iterator", "const_reverse_iterator *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_iterator = {"_p_iterator", "iterator *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_reverse_iterator = {"_p_reverse_iterator", "reverse_iterator *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_std__mapT_std__string_std__vectorT_int_t_t = {"_p_std__mapT_std__string_std__vectorT_int_t_t", "std::map< std::string,std::vector< int > > *|MyString::AhoCorasickResult *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_std__string = {"_p_std__string", "std::string *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_std__vectorT_std__string_t = {"_p_std__vectorT_std__string_t", "std::vector< std::string > *", 0, 0, (void*)0, 0};
 
 static swig_type_info *swig_type_initial[] = {
+  &_swigt__p_AhoCorasickResult,
   &_swigt__p_MyString,
   &_swigt__p_MyString__IteratorT_false_false_t,
   &_swigt__p_MyString__IteratorT_false_true_t,
@@ -6818,9 +7487,12 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_const_reverse_iterator,
   &_swigt__p_iterator,
   &_swigt__p_reverse_iterator,
+  &_swigt__p_std__mapT_std__string_std__vectorT_int_t_t,
   &_swigt__p_std__string,
+  &_swigt__p_std__vectorT_std__string_t,
 };
 
+static swig_cast_info _swigc__p_AhoCorasickResult[] = {  {&_swigt__p_AhoCorasickResult, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_MyString[] = {  {&_swigt__p_MyString, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_MyString__IteratorT_false_false_t[] = {  {&_swigt__p_MyString__IteratorT_false_false_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_MyString__IteratorT_false_true_t[] = {  {&_swigt__p_MyString__IteratorT_false_true_t, 0, 0, 0},{0, 0, 0, 0}};
@@ -6832,9 +7504,12 @@ static swig_cast_info _swigc__p_const_iterator[] = {  {&_swigt__p_const_iterator
 static swig_cast_info _swigc__p_const_reverse_iterator[] = {  {&_swigt__p_const_reverse_iterator, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_iterator[] = {  {&_swigt__p_iterator, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_reverse_iterator[] = {  {&_swigt__p_reverse_iterator, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_std__mapT_std__string_std__vectorT_int_t_t[] = {  {&_swigt__p_std__mapT_std__string_std__vectorT_int_t_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_std__string[] = {  {&_swigt__p_std__string, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_std__vectorT_std__string_t[] = {  {&_swigt__p_std__vectorT_std__string_t, 0, 0, 0},{0, 0, 0, 0}};
 
 static swig_cast_info *swig_cast_initial[] = {
+  _swigc__p_AhoCorasickResult,
   _swigc__p_MyString,
   _swigc__p_MyString__IteratorT_false_false_t,
   _swigc__p_MyString__IteratorT_false_true_t,
@@ -6846,7 +7521,9 @@ static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_const_reverse_iterator,
   _swigc__p_iterator,
   _swigc__p_reverse_iterator,
+  _swigc__p_std__mapT_std__string_std__vectorT_int_t_t,
   _swigc__p_std__string,
+  _swigc__p_std__vectorT_std__string_t,
 };
 
 

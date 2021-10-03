@@ -40,8 +40,7 @@ void do_constructor_tests()
     MyString count_char_string('a',10);
     are_equal(count_char_string.c_str(),"aaaaaaaaaa");
     MyString count_str_string("lorem ipsum?",10);
-    //could be more elegant
-    are_equal(count_str_string.c_str(),"lorem ipsum?lorem ipsum?lorem ipsum?lorem ipsum?lorem ipsum?lorem ipsum?lorem ipsum?lorem ipsum?lorem ipsum?lorem ipsum?");
+    are_equal(count_str_string.c_str(),"lorem ipsu");
     const char * exceptionally_large_cstr=
     #include "exceptionally_large_string.txt"
     ;

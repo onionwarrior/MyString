@@ -1,4 +1,4 @@
-CC=g++-8
+CC=gcc
 LD=g++-8
 SWIG=swig
 SWIGDIR=swig/
@@ -12,10 +12,11 @@ STRICTFLAGS =  -Wall -Wpedantic -Werror
 LDFLAGS=-shared
 SOURCES:= $(SWIGDIR)my_string_wrap.cxx $(SRCDIR)my_string.cpp
 OBJECTS:=$(addprefix $(OBJDIR),$(notdir $(addsuffix .o,$(basename $(SOURCES)))))
-#modify if needed
-PYTHON_INCLUDE= -I/usr/include/python3.5
+#modify if neededl
+PYTHON_INCLUDE= -I/usr/include/python3.6
+PYTHON_LIB=-I/usr/lib/x86_64-linux-gnu
 _my_string_swig.so: make_wrap $(OBJECTS)
-	$(LD) $(LDFLAGS) $(OBJECTS) -o $(SWIGDIR)$@
+	$(LD) $(LDFLAGS) $(OBJECTS) -o $(SWIGDIR)$@ 
 make_wrap:$(SWIGDIR)my_string.i
 	$(SWIG) $(SWIGFLAGS) $<
 $(OBJDIR)my_string.o:$(SRCDIR)my_string.cpp
@@ -25,9 +26,9 @@ $(OBJDIR)my_string_wrap.o:$(SWIGDIR)my_string_wrap.cxx
 clean:
 	rm $(OBJECTS) $(SWIGDIR)_my_string_swig.so
 	rm $(TESTDIR)run_tests.out
-test: $(TESTDIR)run_tests.cpp $(OBJDIR)my_string.o 
-	@$(CC) $(CCFLAGS) $(STRICTFLAGS) $< -o $(basename $<).o
-	@$(CC) $(addsuffix .o,$(basename $^)) -o $(basename $<).out
-	@rm $(basename $<).o
-	@$(basename $<).out
-	@rm $(basename $<).out
+test: $(TESTDIR)run_tests.cpp $(OBJDIR)my_string.o
+	$(CC) $(CCFLAGS) $(STRICTFLAGS) $< -o $(basename $<).o
+	$(LD) $(addsuffix .o,$(basename $^)) -o $(basename $<).out
+	rm $(basename $<).o
+	$(basename $<).out
+	rm $(basename $<).out

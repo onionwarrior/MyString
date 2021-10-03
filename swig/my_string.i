@@ -13,7 +13,57 @@
     }
 }
 %enddef
+%extend MyString
+{
+    MyString __add__(const MyString&rhs)
+    {
+        return operator+(*$self,rhs);
+    }
+    bool __eq__(const MyString&rhs)
+    {
+        return operator==(*$self,rhs);
+    }
+    bool __ne__(const MyString&rhs)
+    {
+        return operator!=(*$self,rhs);
+    }
+    bool __eq__(const char*rhs)
+    {
+        return operator==(*$self,rhs);
+    }
+    bool __ne__(const char*rhs)
+    {
+        return operator!=(*$self,rhs);
+    }
+    MyString __add__(const char *rhs)
+    {
+        return operator+(*$self,rhs);
+    }
+    bool __lt__(const MyString&rhs)
+    {
+        return operator<(*$self,rhs);
+    }
+    bool __le__(const MyString&rhs)
+    {
+        return operator<=(*$self,rhs);
+    }
+    bool __gt__(const MyString&rhs)
+    {
+        return operator>(*$self,rhs);
+    }
+    bool __ge__(const MyString&rhs)
+    {
+        return operator>=(*$self,rhs);
+    }
+    char __getitem__(unsigned i)
+	{	
+        return (*$self)[i];
+    }
+	void __setitem__(unsigned i,char v)
+	{	(*$self)[i]=v;	}
+    
+}
 %ignore MyString::MyString(std::initializer_list<char>);
-%rename(add) MyString::operator+(const MyString &,const MyString &);
-%rename(eq) MyString::operator==(const MyString &,const MyString &);
+%rename(__setitem__) MyString::__setitem__;
+%rename(__getitem__) MyString::__getitem__;
 __STR__(MyString);
