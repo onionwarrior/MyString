@@ -1,6 +1,6 @@
 #include <boost/python.hpp>
 #include <optional>
-#include "include/my_string.hpp"
+#include "../include/my_string.hpp"
 using namespace boost::python;
 std::string __str__(const MyString &str)
 {
@@ -18,7 +18,7 @@ BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(insert_overloads,insert , 2, 3)
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS( append_overloads,append,1,3)
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS( substr_overloads,substr,1,2)
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS( find_overloads,find,1,2)
-BOOST_PYTHON_MODULE(mystring)
+BOOST_PYTHON_MODULE(my_string_boost)
 {
     class_<MyString>("MyString")
         .def("length",&MyString::length)

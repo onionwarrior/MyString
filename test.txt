@@ -1,3 +1,0 @@
-gcc -c -fpic -std=c++17 -Wall -Wpedantic -Werror tests/run_tests.cpp -o tests/run_tests.o
-gcc tests/run_tests.o obj/my_string.o -o tests/run_tests.out
-Makefile:30: recipe for target 'test' failed

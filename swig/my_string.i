@@ -3,7 +3,6 @@
 #define SWIG_FILE_WITH_INIT
 #include "../include/my_string.hpp"
 %}
-%include "../include/my_string.hpp"
 %define __STR__(class_name)
 %feature("python:slot","tp_str",functype="reprfunc") class_name::py_to_string;
 %extend class_name{
@@ -16,7 +15,7 @@
 %extend MyString
 {
     MyString __add__(const MyString&rhs)
-    {
+    {   
         return operator+(*$self,rhs);
     }
     bool __eq__(const MyString&rhs)
@@ -61,9 +60,16 @@
     }
 	void __setitem__(unsigned i,char v)
 	{	(*$self)[i]=v;	}
+    char* __str__()
+    {
+        return (*$self).c_str();
+    }
     
 }
 %ignore MyString::MyString(std::initializer_list<char>);
+%ignore MyString::MyString(MyString &&);
 %rename(__setitem__) MyString::__setitem__;
 %rename(__getitem__) MyString::__getitem__;
 __STR__(MyString);
+
+%include "../include/my_string.hpp"

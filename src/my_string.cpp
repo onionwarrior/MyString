@@ -111,6 +111,8 @@ void MyString::append(const char *c_str, size_t index, size_t count)
     //using default parameter for count =2^64-1
     if (default_append == count)
         count = std::strlen(c_str)-index;
+    if(c_str==nullptr)
+        throw std::invalid_argument("nullptr passed to append");
     if(count+index>std::strlen(c_str))
         throw std::out_of_range("append index+count was larger than string to append");
     //reallocate if needed and copy to the end
