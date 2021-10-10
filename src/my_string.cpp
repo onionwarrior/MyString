@@ -195,7 +195,7 @@ void MyString::insert(size_t index, const std::string &str, size_t size)
 find using builtin strstr,
 and since it returns a pointer, cast ptr difference to int an return
 */
-int MyString::find(const char *str, size_t index)
+int MyString::find(const char *str, size_t index) const 
 {
     if (index > size_)
         throw std::out_of_range("MyString::find index was out of range!");
@@ -206,21 +206,17 @@ int MyString::find(const char *str, size_t index)
         return static_cast<int>(result - str_);
     return -1;
 }
-int MyString::find(const std::string &str, size_t index)
+int MyString::find(const std::string &str, size_t index) const
 {
     return find(str.c_str(), index);
 }
-MyString::AhoCorasickResult MyString::find(const std::vector<std::string> &dictionary)
+MyString::AhoCorasickResult MyString::find(const std::vector<std::string> &dictionary) const
 {
     AhoCorasickAutomaton automata(dictionary);
     automata.BuildAutomaton();
     return automata.process_text(std::string(c_str()));
 }
-/*
-copy count characters to a string,then construct a temp MyString based on the string,
-and hope that compiler uses RVO here :)
-*/
-MyString MyString::substr(size_t index, size_t count)
+MyString MyString::substr(size_t index, size_t count) const
 {
     if (default_append == count)
         count = size_ - index;
@@ -267,7 +263,7 @@ MyString &MyString::operator+=(const MyString &rhs)
 }
 MyString &MyString::operator=(const char rhs)
 {
-    resize(1);
+    clear();
     str_[0] = rhs;
     return *this;
 }
@@ -350,7 +346,6 @@ using it = MyString::iterator;
 using cit = MyString::const_iterator;
 using rit = MyString::reverse_iterator;
 using rcit = MyString::const_reverse_iterator;
-//all iterators methods called from class instance, where c-version differs only in 'const' modifier
 it MyString::begin()
 {
     return it{&str_[0]};

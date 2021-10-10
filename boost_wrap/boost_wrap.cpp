@@ -1,5 +1,4 @@
 #include <boost/python.hpp>
-#include <optional>
 #include "../include/my_string.hpp"
 using namespace boost::python;
 std::string __str__(const MyString &str)
@@ -32,7 +31,7 @@ BOOST_PYTHON_MODULE(my_string_boost)
         .def(init<const char *,size_t>())
         .def(init<int>())
         .def(init<float>())
-        //this causes some conflicts(python does not have a char type)
+        //this causes some weird calls to wrong constructor(python does not have a char type)
         //.def(init<char,size_t>())
         .def(init<const MyString&>())
         .def(init<const std::string&>())\
@@ -42,9 +41,9 @@ BOOST_PYTHON_MODULE(my_string_boost)
         .def("insert",static_cast<void (MyString::*)(size_t,const std::string&,size_t)>(&MyString::insert),insert_overloads())
         .def("append",static_cast<void (MyString::*)(const std::string&,size_t,size_t)>(&MyString::append),append_overloads())
         .def("replace",static_cast<void (MyString::*)(size_t,size_t,const std::string&)>(&MyString::replace))
-        .def("substr",static_cast<MyString (MyString::*)(size_t,size_t)>(&MyString::substr),substr_overloads())
+        .def("substr",static_cast<MyString (MyString::*)(size_t,size_t) const>(&MyString::substr),substr_overloads())
         .def("erase",static_cast<void (MyString::*)(size_t,size_t)>(&MyString::erase))
-        .def("find",static_cast<int (MyString::*)(const std::string&,size_t)>(&MyString::find),find_overloads())
+        .def("find",static_cast<int (MyString::*)(const std::string&,size_t) const>(&MyString::find),find_overloads())
         .def(self+self)
         .def(self<self)
         .def(self==self)

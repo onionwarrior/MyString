@@ -10,8 +10,7 @@
 #include <memory>
 #include <vector>
 #include "aho_corasick.hpp"
-//no magic numberss
-class MyString 
+class MyString //class should be final, but it messes up wrappers
 {
     static constexpr size_t default_append{static_cast<size_t>(-1)};
     size_t size_{0};
@@ -19,7 +18,7 @@ class MyString
     char *str_{nullptr};
     void resize(size_t);
     template <typename ArgType>
-    ArgType to_impl(std::true_type const &)
+    ArgType to_impl(std::true_type const &) const
     {
         static constexpr auto is_signed{std::is_signed_v<ArgType>};
         using ret_val_type=std::conditional_t<is_signed, int64_t, uint64_t>;
@@ -31,7 +30,7 @@ class MyString
         return static_cast<ArgType>(ret_val);
     }
     template <typename ArgType>
-    ArgType to_impl(std::false_type const &)
+    ArgType to_impl(std::false_type const &) const
     {
         auto ret_val{0.0};
         if(sscanf(str_, "%lf", &ret_val)<1)
@@ -197,19 +196,19 @@ public:
     }
     template <bool IsConst>
     MyString
-    substr(Iterator<IsConst,false> it, size_t count=default_append)
+    substr(Iterator<IsConst,false> it, size_t count=default_append) const
     {
         return substr(static_cast<size_t>(it.operator->()-str_),count);
     }
     template <bool IsConst>
     int
-    find(const char*str, Iterator<IsConst,false> it)
+    find(const char*str, Iterator<IsConst,false> it) const
     {
         return find(str,static_cast<size_t>(it.operator->()-str_));
     }
     template <bool IsConst>
     int
-    find(const std::string&str, Iterator<IsConst,false> it)
+    find(const std::string&str, Iterator<IsConst,false> it) const
     {
        return find(str,static_cast<size_t>(it.operator->()-str_));
     }
@@ -220,16 +219,13 @@ public:
     MyString(const char *,size_t =default_append);
     MyString(char, size_t);
     MyString(const MyString &);
-    //could use stringstreams here, but we are not cutting any corners (also definetely not portable due to format string)
-    //if only pattern matching was a thing...
     template<typename T,std::enable_if_t<std::is_integral<T>::value, bool> = true>
     MyString(T arg):size_{128},capacity_{size_+1},str_{new char[capacity_]()}
     {
-        if constexpr(std::is_signed<T>::value)
-            std::snprintf(str_,size_,"%" PRId64 "",static_cast<int64_t>(arg));
-        else
-            std::snprintf(str_,size_,"%" PRIu64 "",static_cast<uint64_t>(arg));
-        shrink_to_fit();
+        static constexpr auto is_signed{std::is_signed_v<T>};
+        static constexpr auto format{is_signed?"%" PRId64 "":"%" PRIu64 ""};
+        using arg_type=std::conditional_t<is_signed, int64_t, uint64_t>;
+        std::snprintf(str_,size_,format,static_cast<arg_type>(arg));
     }
     template<typename T,std::enable_if_t<std::is_floating_point<T>::value, bool> = true>
     MyString(T arg):size_{128},capacity_{size_+1},str_{new char[capacity_]()}
@@ -238,7 +234,6 @@ public:
             std::snprintf(str_,size_,"%f",arg);
         else
             std::snprintf(str_,size_,"%lf",arg);
-        shrink_to_fit();
     }
     friend void swap(MyString &first, MyString &second);
     char *c_str() const;
@@ -256,10 +251,10 @@ public:
     void insert(size_t, size_t, char);
     void insert(size_t, const char *, size_t = default_append);
     void insert(size_t, const std::string &, size_t = default_append);
-    MyString substr(size_t, size_t = default_append);
-    int find(const char *, size_t = 0);
-    int find(const std::string &, size_t = 0);
-    AhoCorasickResult find(const std::vector<std::string>&diy);
+    MyString substr(size_t, size_t = default_append) const;
+    int find(const char *, size_t = 0) const;
+    int find(const std::string &, size_t = 0) const;
+    AhoCorasickResult find(const std::vector<std::string>&) const;
     void erase(size_t, size_t);
     void shrink_to_fit();
     friend MyString operator+(const MyString &,const MyString &);
@@ -289,7 +284,7 @@ public:
     template <typename T>
     friend std::basic_istream<T> &operator>>(std::basic_istream<T> &, MyString &);
     template <typename ArgType>
-    ArgType to()
+    ArgType to() const
     {
         return to_impl<ArgType>(std::is_integral<ArgType>{});
     }

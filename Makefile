@@ -13,14 +13,15 @@ STRICTFLAGS =  -Wall -Wpedantic -Werror
 LDFLAGS=-shared -Wl,--no-allow-shlib-undefined
 SOURCES:= $(SWIGDIR)my_string_wrap.cxx $(SRCDIR)my_string.cpp
 OBJECTS:=$(addprefix $(OBJDIR),$(notdir $(addsuffix .o,$(basename $(SOURCES)))))
+ROOT_DIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))/
 #modify if needed...
-PYTHON_INCLUDE=-I/usr/include/python3.6
+PYTHON_INCLUDE=-I/usr/include/python3.6m
 PYTHON_LIB=-I/usr/lib/x86_64-linux-gnu
 swig:_my_string_swig.so
 	mv $(SWIGDIR)_my_string_swig.so $(TESTDIR)py/ 
 	mv $(SWIGDIR)my_string_swig.py $(TESTDIR)py/ 
 boost:$(OBJDIR)boost_wrap.o $(OBJDIR)my_string.o
-	$(LD) $(LDFLAGS) $^ -lpython3.6m -lboost_python36  -std=c++17 -o $(BOOSTDIR)my_string_boost.so
+	$(LD) $(LDFLAGS) $^ -L$(ROOT_DIR)$(BOOSTDIR) -lpython3.6m -lboost_python36   -std=c++17 -o $(BOOSTDIR)my_string_boost.so 
 	mv  $(BOOSTDIR)my_string_boost.so  $(TESTDIR)py/ 
 _my_string_swig.so: make_wrap $(OBJECTS)
 	$(LD) $(LDFLAGS)  $(OBJECTS) $(PYTHON_INCLUDE) -o $(SWIGDIR)$@ 
@@ -29,7 +30,7 @@ make_wrap:$(SWIGDIR)my_string.i
 $(OBJDIR)my_string.o:$(SRCDIR)my_string.cpp
 	$(CC) $(PYTHON_INCLUDE) $(STRICTFLAGS) $(CCFLAGS) $< -o $@
 $(OBJDIR)my_string_wrap.o:$(SWIGDIR)my_string_wrap.cxx
-	$(CC) $(PYTHON_INCLUDE) $(CCFLAGS) $< -o $@
+	$(CC) $(PYTHON_INCLUDE) $(CCFLAGS) $< -o $@ 
 $(OBJDIR)boost_wrap.o:$(BOOSTDIR)boost_wrap.cpp
 	$(CC) $(CCFLAGS) $< -o $@ $(PYTHON_INCLUDE) 
 clean:

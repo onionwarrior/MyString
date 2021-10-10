@@ -20,31 +20,31 @@ struct AhoCorasickAutomaton
                                                            to_parent_{c}
         {
         }
-        bool is_leaf() const
+        auto is_leaf() const
         {
             return !(patterns.empty());
         }
-        bool has_suff_link() const
+        auto has_suff_link() const
         {
             return suff_link != nullptr;
         }
-        bool is_root() const
+        auto is_root() const
         {
             return is_root_;
         }
-        bool has_child(char c) const
+        auto has_child(char c) const
         {
             return child_nodes.find(c) != child_nodes.end();
         }
-        bool has_link(char c) const
+        auto has_link(char c) const
         {
             return links.find(c) != links.end();
         }
-        void add_child(char c, Node *ptr)
+        auto add_child(char c, Node *ptr)
         {
             child_nodes[c] = std::make_unique<Node>(c, ptr);
         }
-        void add_patern(const std::string &pattern)
+        auto add_patern(const std::string &pattern)
         {
             patterns.push_back(pattern);
         }
@@ -58,7 +58,7 @@ struct AhoCorasickAutomaton
         }
         //All automaton links are stored in a map for each state, such that (state[i]-(c)>state[j])
         //therefore the automata either transitions into state by c or by suffix link
-        Node *get_link(char c)
+        Node* get_link(char c)
         {
             if (!has_link(c))
             {
@@ -72,7 +72,7 @@ struct AhoCorasickAutomaton
             return links[c];
         }
         //lazily define suffix link
-        Node *get_suff_link()
+        Node*  get_suff_link()
         {
             if (has_suff_link())
                 return suff_link;
@@ -88,7 +88,7 @@ struct AhoCorasickAutomaton
             return suff_link;
         }
         //lazily define compressed suffix link, a link to a closest terminal or to root
-        Node *get_comp_suff_link()
+         Node*  get_comp_suff_link()
         {
             if (comp_suff_link == nullptr)
             {
@@ -111,7 +111,7 @@ struct AhoCorasickAutomaton
             this->dict.push_back(str);
     }
     //add a string char-wise, creating new nodes
-    void add_string(const std::string &str)
+    auto add_string(const std::string &str)
     {
         auto cur = root.get();
         for (const auto c : str)
@@ -123,7 +123,7 @@ struct AhoCorasickAutomaton
         cur->add_patern(str);
     }
     //add all strings from dict
-    void BuildAutomaton()
+    auto BuildAutomaton()
     {
         root = std::make_unique<Node>('\0', nullptr, true);
         for (const auto &str : this->dict)
